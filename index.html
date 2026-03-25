@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>WebLight Media — Company Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#f8f9fa; --bg2:#ffffff; --bg3:#f0f2f5; --border:#e2e8f0; --text:#1a202c; --text2:#4a5568; --text3:#718096;
+  --accent:#2ecc71; --accent2:#27ae60; --accentbg:#e8faf1; --live:#2ecc71; --livebg:#e8faf1;
+  --soon:#f59e0b; --soonbg:#fef3c7; --red:#e53e3e; --redbg:#fff5f5;
+  --blue:#1A73E8; --bluebg:#e8f0fe; --orange:#f97316; --orangebg:#fff7ed;
+  --sidebar:240px; --header:60px;
+  --sh1:0 1px 3px rgba(0,0,0,.08); --sh2:0 4px 12px rgba(0,0,0,.1); --sh3:0 8px 24px rgba(0,0,0,.12);
+  --radius:10px; --radius2:6px;
+}
+[data-theme="dark"] {
+  --bg:#0f1117; --bg2:#1a1d27; --bg3:#242736; --border:#2d3148; --text:#e2e8f0; --text2:#a0aec0; --text3:#718096;
+  --accentbg:#1a2e22; --livebg:#1a2e22; --soonbg:#2e2a1a; --redbg:#2e1a1a; --bluebg:#1a2340; --orangebg:#2e2010;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:14px}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* LOGIN */
+.login-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
+.login-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:40px 36px;width:100%;max-width:380px;text-align:center;box-shadow:var(--sh3)}
+.login-logo{width:56px;height:56px;background:var(--accent);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;margin:0 auto 16px}
+.login-card h1{font-size:20px;font-weight:700;margin-bottom:4px}
+.login-card p{color:var(--text3);font-size:13px;margin-bottom:24px}
+.login-input{width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3);color:var(--text);font-size:16px;text-align:center;letter-spacing:4px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.login-input:focus{border-color:var(--accent)}
+.login-btn{width:100%;margin-top:12px;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;transition:background .2s}
+.login-btn:hover{background:var(--accent2)}
+.login-error{color:var(--red);font-size:12px;margin-top:8px;min-height:18px}
+
+/* ADMIN AUTH MODAL */
+.admin-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:8000}
+.admin-modal-overlay.open{display:flex}
+.admin-modal-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:32px;width:100%;max-width:340px;text-align:center;box-shadow:var(--sh3)}
+.admin-modal-card h2{font-size:18px;font-weight:700;margin-bottom:6px}
+.admin-modal-card p{color:var(--text3);font-size:13px;margin-bottom:20px}
+.admin-modal-input{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3);color:var(--text);font-size:15px;text-align:center;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.admin-modal-input:focus{border-color:var(--accent)}
+.admin-modal-btns{display:flex;gap:8px;margin-top:12px}
+.admin-modal-btns button{flex:1;padding:10px;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;border:none}
+.btn-confirm{background:var(--accent);color:#fff}
+.btn-confirm:hover{background:var(--accent2)}
+.btn-cancel-modal{background:var(--bg3);color:var(--text2);border:1px solid var(--border)!important}
+.admin-modal-error{color:var(--red);font-size:12px;margin-top:8px;min-height:16px}
+
+/* LAYOUT */
+.wiki-layout{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);min-width:var(--sidebar);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0}
+.sidebar-header{padding:16px;border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-logo{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:13px;flex-shrink:0}
+.brand-text{overflow:hidden}
+.brand-title{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-sub{font-size:11px;color:var(--text3)}
+.sidebar-nav{padding:8px 0;flex:1}
+.nav-section{padding:8px 12px 4px;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.8px;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 12px;margin:1px 8px;border-radius:var(--radius2);cursor:pointer;color:var(--text2);font-size:13px;font-weight:500;transition:all .15s;text-decoration:none}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--accentbg);color:var(--accent);font-weight:600}
+.nav-item .nav-icon{font-size:15px;width:20px;text-align:center}
+.sidebar-footer{padding:12px;border-top:1px solid var(--border)}
+.theme-btn{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border-radius:var(--radius2);background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif}
+.theme-btn:hover{background:var(--bg)}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.main-header{height:var(--header);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:100}
+.main-header-left{display:flex;align-items:center;gap:12px}
+.header-title{font-size:16px;font-weight:700}
+.header-actions{display:flex;align-items:center;gap:8px}
+.admin-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:var(--radius2);background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500}
+.admin-btn:hover{border-color:var(--accent);color:var(--accent)}
+.admin-btn.active-admin{background:var(--accentbg);color:var(--accent);border-color:var(--accent)}
+.search-wrap{position:relative}
+.search-input{padding:7px 12px 7px 32px;border:1px solid var(--border);border-radius:var(--radius2);background:var(--bg3);color:var(--text);font-size:13px;width:200px;outline:none;font-family:'Inter',sans-serif}
+.search-input:focus{border-color:var(--accent);width:240px;transition:width .2s}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:13px}
+
+/* CONTENT */
+.main-body{padding:20px;flex:1}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.stat-val{font-size:22px;font-weight:700;color:var(--accent)}
+.stat-label{font-size:12px;color:var(--text3);margin-top:2px}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.pill{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.pill:hover{border-color:var(--accent);color:var(--accent)}
+.pill.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* SECTION */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;margin-top:8px}
+.section-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
+.section-count{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:2px 8px;font-size:11px;color:var(--text3);font-weight:600}
+
+/* CARDS GRID */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:24px}
+.sop-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .2s;position:relative}
+.sop-card:hover{transform:translateY(-2px);box-shadow:var(--sh2);border-color:var(--accent)}
+.sop-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+.sop-icon{font-size:22px;line-height:1}
+.sop-badges{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.badge{padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600}
+.badge-live{background:var(--livebg);color:var(--live)}
+.badge-soon{background:var(--soonbg);color:var(--soon)}
+.sop-title{font-size:14px;font-weight:700;margin-bottom:4px;line-height:1.3}
+.sop-desc{font-size:12px;color:var(--text3);margin-bottom:10px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sop-meta{display:flex;flex-wrap:wrap;gap:4px}
+.tag{padding:2px 7px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);font-size:10px;color:var(--text3)}
+.admin-card-btns{position:absolute;top:10px;right:10px;display:none;gap:4px}
+.admin-mode .admin-card-btns{display:flex}
+.admin-mode .sop-card:hover .admin-card-btns{display:flex}
+.edit-btn,.del-btn{width:26px;height:26px;border-radius:6px;border:none;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
+.edit-btn{background:var(--bluebg);color:var(--blue)}
+.del-btn{background:var(--redbg);color:var(--red)}
+
+/* SM WIKI CARD */
+.sm-wiki-card{background:linear-gradient(135deg,var(--orangebg),var(--bg2));border:2px solid var(--orange);border-radius:var(--radius);padding:18px;cursor:pointer;transition:all .2s;margin-bottom:14px}
+.sm-wiki-card:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.gbp-card-featured{background:linear-gradient(135deg,var(--bluebg),var(--bg2));border:2px solid var(--blue);border-radius:var(--radius);padding:18px;cursor:pointer;transition:all .2s;margin-bottom:14px}
+.gbp-card-featured:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+
+/* CLIENT TILES */
+.client-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:24px}
+.client-tile{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .2s}
+.client-tile:hover{transform:translateY(-2px);box-shadow:var(--sh2);border-color:var(--accent)}
+.client-tile-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.client-icon{font-size:18px}
+.client-title{font-weight:700;font-size:13px}
+.client-platforms{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
+.client-freq{font-size:11px;color:var(--text3)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:5000;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border-radius:14px;width:100%;max-width:680px;max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--sh3)}
+.modal-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px}
+.modal-icon{font-size:26px;flex-shrink:0}
+.modal-header-text{flex:1;min-width:0}
+.modal-title{font-size:17px;font-weight:700}
+.modal-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.modal-close{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text2);flex-shrink:0}
+.modal-close:hover{background:var(--bg);color:var(--red)}
+.modal-tabs{display:flex;padding:0 20px;border-bottom:1px solid var(--border);gap:0}
+.modal-tab{padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--text3);transition:all .15s}
+.modal-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.modal-body{padding:20px;overflow-y:auto;flex:1}
+.modal-section{margin-bottom:16px}
+.modal-section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.modal-tags{display:flex;flex-wrap:wrap;gap:6px}
+.modal-tag{padding:3px 9px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);font-size:12px;color:var(--text2)}
+.sections-list{display:flex;flex-direction:column;gap:4px}
+.section-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg3);border-radius:var(--radius2);font-size:12px}
+.section-num{width:20px;height:20px;border-radius:50%;background:var(--accentbg);color:var(--accent);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.drive-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:var(--blue);color:#fff;border-radius:var(--radius2);font-size:13px;font-weight:600;text-decoration:none;border:none;cursor:pointer}
+.drive-btn:hover{opacity:.9}
+.preview-frame{width:100%;height:500px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3)}
+.preview-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;color:var(--text3);font-size:13px;gap:8px}
+
+/* ADMIN PANEL */
+.admin-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:20px}
+.admin-panel-title{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.admin-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.admin-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.admin-section-title{font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.form-row.single{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-label{font-size:11px;font-weight:600;color:var(--text3)}
+.form-input,.form-select,.form-textarea{padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius2);background:var(--bg3);color:var(--text);font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-textarea{resize:vertical;min-height:70px}
+.btn-primary{padding:9px 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius2);font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-primary:hover{background:var(--accent2)}
+.btn-secondary{padding:7px 12px;background:var(--bg3);color:var(--text2);border:1px solid var(--border);border-radius:var(--radius2);font-size:12px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.btn-danger{padding:7px 12px;background:var(--redbg);color:var(--red);border:1px solid var(--red);border-radius:var(--radius2);font-size:12px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-danger:hover{background:var(--red);color:#fff}
+.sop-edit-list{display:flex;flex-direction:column;gap:8px;max-height:400px;overflow-y:auto}
+.sop-edit-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:10px 12px;display:flex;align-items:center;gap:8px}
+.sop-edit-name{flex:1;font-size:13px;font-weight:500}
+.sop-edit-form{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:12px;margin-top:6px}
+.sop-edit-form.open{display:block}
+.pass-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:8px}
+.pass-row .form-group{flex:1}
+.pass-row button{white-space:nowrap;margin-bottom:0}
+.success-msg{color:var(--live);font-size:12px;font-weight:600}
+
+/* NO RESULTS */
+.no-results{text-align:center;padding:60px 20px;color:var(--text3)}
+.no-results-icon{font-size:40px;margin-bottom:12px}
+
+/* MOBILE */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .search-input{width:160px}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-overlay" id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">WL</div>
+    <h1>WebLight Media</h1>
+    <p>Company Wiki — Internal Access Only</p>
+    <input type="password" class="login-input" id="login-pin" placeholder="Enter passcode" maxlength="20"
+      onkeydown="if(event.key==='Enter')checkLogin()"/>
+    <button class="login-btn" onclick="checkLogin()">Access Wiki</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ADMIN AUTH MODAL -->
+<div class="admin-modal-overlay" id="admin-auth-modal">
+  <div class="admin-modal-card">
+    <div style="font-size:28px;margin-bottom:12px">🔐</div>
+    <h2>Admin Access</h2>
+    <p>Enter the admin passcode to manage SOPs</p>
+    <input type="password" class="admin-modal-input" id="admin-pin" placeholder="Admin passcode" maxlength="30"
+      onkeydown="if(event.key==='Enter')checkAdminCode();if(event.key==='Escape')closeAdminModal()"/>
+    <div class="admin-modal-btns">
+      <button class="btn-cancel-modal btn-secondary" onclick="closeAdminModal()">Cancel</button>
+      <button class="btn-confirm" onclick="checkAdminCode()">Unlock</button>
+    </div>
+    <div class="admin-modal-error" id="admin-error"></div>
+  </div>
+</div>
+
+<!-- SOP MODAL -->
+<div class="modal-overlay" id="sop-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-icon" id="m-icon"></div>
+      <div class="modal-header-text">
+        <div class="modal-title" id="m-title"></div>
+        <div class="modal-sub" id="m-sub"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-tabs">
+      <div class="modal-tab active" id="tab-details" onclick="switchTab('details')">📋 Details</div>
+      <div class="modal-tab" id="tab-preview" onclick="switchTab('preview')">👁 Live Preview</div>
+    </div>
+    <div class="modal-body" id="modal-details-body"></div>
+    <div class="modal-body" id="modal-preview-body" style="display:none"></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none">
+  <div class="wiki-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-logo">WL</div>
+          <div class="brand-text">
+            <div class="brand-title">WebLight Media</div>
+            <div class="brand-sub">SOP & Wiki Library</div>
+          </div>
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="sidebar-nav"></nav>
+      <div class="sidebar-footer">
+        <button class="theme-btn" onclick="toggleTheme()">
+          <span id="theme-icon">🌙</span>
+          <span id="theme-label">Dark Mode</span>
+        </button>
+      </div>
+    </aside>
+    <!-- MAIN -->
+    <div class="main">
+      <header class="main-header">
+        <div class="main-header-left">
+          <div class="header-title" id="header-title">All SOPs</div>
+        </div>
+        <div class="header-actions">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="search-input" placeholder="Search SOPs…" oninput="render()"/>
+          </div>
+          <button class="admin-btn" id="admin-btn" onclick="openAdminModal()">🔧 Admin</button>
+        </div>
+      </header>
+      <div class="main-body" id="main-body"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── PASSCODES ───────────────────────────────────────────────
+const DEFAULT_APP_PASS = 'WebLight2026';
+const DEFAULT_ADMIN_PASS = 'WLadmin2026';
+function getCurrentAppPass(){return localStorage.getItem('wl_app_pass')||DEFAULT_APP_PASS;}
+function getCurrentAdminPass(){return localStorage.getItem('wl_admin_pass')||DEFAULT_ADMIN_PASS;}
+
+// ─── AUTH ─────────────────────────────────────────────────────
+function checkLogin(){
+  const pin = document.getElementById('login-pin').value.trim();
+  if(pin===getCurrentAppPass()){
+    sessionStorage.setItem('wl_authenticated','1');
+    const s=document.getElementById('login-screen');
+    s.style.opacity='0';s.style.pointerEvents='none';
+    setTimeout(()=>{s.style.display='none';document.getElementById('app').style.display='flex';render();},400);
+  } else {
+    document.getElementById('login-error').textContent='Incorrect passcode. Please try again.';
+    document.getElementById('login-pin').value='';
+  }
+}
+if(sessionStorage.getItem('wl_authenticated')==='1'){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='flex';
+}
+
+// ─── ADMIN MODAL ──────────────────────────────────────────────
+let adminMode=false;
+function openAdminModal(){
+  if(adminMode){adminMode=false;document.getElementById('admin-btn').classList.remove('active-admin');document.getElementById('admin-btn').textContent='🔧 Admin';render();return;}
+  document.getElementById('admin-auth-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('admin-pin').focus(),100);
+}
+function closeAdminModal(){
+  document.getElementById('admin-auth-modal').classList.remove('open');
+  document.getElementById('admin-pin').value='';
+  document.getElementById('admin-error').textContent='';
+}
+function checkAdminCode(){
+  const code=document.getElementById('admin-pin').value.trim();
+  if(code===getCurrentAdminPass()){
+    adminMode=true;
+    document.getElementById('admin-btn').classList.add('active-admin');
+    document.getElementById('admin-btn').textContent='🔧 Admin ON';
+    closeAdminModal();render();
+  } else {
+    document.getElementById('admin-error').textContent='Incorrect admin code.';
+    document.getElementById('admin-pin').value='';
+  }
+}
+
+// ─── DATA ─────────────────────────────────────────────────────
+const coreSops=[
+  {id:1,title:'Clockify Time Tracking',icon:'⏱️',status:'live',pages:8,updated:'March 2026',category:'Operations',
+   driveUrl:'https://drive.google.com/file/d/1NyXRtpJF9tnsLbdhY9e-GvYZLgFqbz8x/view?usp=sharing',
+   previewUrl:'https://drive.google.com/file/d/1NyXRtpJF9tnsLbdhY9e-GvYZLgFqbz8x/preview',
+   audience:['Interns','All team members','Team managers'],
+   desc:'Complete guide to tracking billable hours, projects and clients in Clockify.',
+   sections:['Getting started','Workspace overview','Creating time entries','Projects & clients','Reports','Billing','Admin controls'],
+   topics:['Time tracking','Billable hours','Clockify workspace','Projects','Clients','Reports','Invoicing']},
+  {id:2,title:'Ops Hub: Daily Operations',icon:'🏢',status:'live',pages:8,updated:'March 2026',category:'Operations',
+   driveUrl:'https://drive.google.com/file/d/14scnkcrAh69HPOrRUMpes5SA22heSKVb/view?usp=sharing',
+   previewUrl:'https://drive.google.com/file/d/14scnkcrAh69HPOrRUMpes5SA22heSKVb/preview',
+   audience:['All team members','Team managers'],
+   desc:'Daily operations guide covering team workflows, communication standards, and office procedures.',
+   sections:['Morning check-in','Task management','Communication channels','File management','EOD wrap-up','Weekly reviews','Emergency contacts'],
+   topics:['Daily workflow','Communication','Slack','Google Drive','Task management','Team meetings']},
+  {id:3,title:'Employee Onboarding',icon:'👋',status:'live',pages:8,updated:'2025',category:'People & HR',
+   driveUrl:'https://drive.google.com/file/d/1gc79fXiuN6VuIvf-_jd5iDTEOPXwJ7rD/view?usp=sharing',
+   previewUrl:'https://drive.google.com/file/d/1gc79fXiuN6VuIvf-_jd5iDTEOPXwJ7rD/preview',
+   audience:['New hires','Team managers'],
+   desc:'Complete onboarding guide for new team members covering tools, processes and culture.',
+   sections:['Before you arrive — manager prep','Day 1: Welcome & setup','Day 2–3: Tools training','Day 4–5: Client intro','Week 2: Deep dive','30-60-90 day roadmap'],
+   topics:['Onboarding','New hire','Day-1 plan','Tools setup','Asana','Response times','Culture','Policies']},
+  {id:4,title:'2026 Holiday Calendar',icon:'📅',status:'live',pages:1,updated:'March 2026',category:'People & HR',
+   driveUrl:'https://drive.google.com/file/d/14tv1YySNI3OSDJiilBRF_KuD9SWHuk8n/view?usp=sharing',
+   previewUrl:'https://drive.google.com/file/d/14tv1YySNI3OSDJiilBRF_KuD9SWHuk8n/preview',
+   audience:['All team members','Team managers'],
+   desc:'Official 2026 company holiday schedule including US and Egypt holidays.',
+   sections:['Full calendar','US holidays','Egypt holidays','Policy: choose 10 days','Submission instructions'],
+   topics:['Holidays','PTO','Time off','US holidays','Egypt holidays','2026 calendar']},
+  {id:12,title:'Asana Project Management',icon:'📋',status:'coming-soon',pages:0,updated:'Coming Soon',category:'Projects',
+   driveUrl:null,previewUrl:null,audience:['All team members'],
+   desc:'Comprehensive guide to managing projects, tasks and workflows in Asana.',
+   sections:[],topics:['Asana','Project management','Tasks','Workflows']},
+  {id:13,title:'Brand Rights & Design Standards',icon:'🎨',status:'coming-soon',pages:0,updated:'Coming Soon',category:'Design & Brand',
+   driveUrl:null,previewUrl:null,audience:['Design team','Content team'],
+   desc:'Guidelines for brand usage, design standards and intellectual property rights.',
+   sections:[],topics:['Brand guidelines','Design standards','IP rights','Logo usage','Color palette']},
+  {id:14,title:'Client Communication',icon:'💬',status:'coming-soon',pages:0,updated:'Coming Soon',category:'Client Management',
+   driveUrl:null,previewUrl:null,audience:['All team members','Account managers'],
+   desc:'Standards and templates for client-facing communication across all channels.',
+   sections:[],topics:['Client communication','Email templates','Response time','Approval process']}
+];
+
+const smWiki={id:20,title:'Social Media Clients — Master Wiki',icon:'📚',status:'live',pages:15,updated:'2026',category:'Social Media',
+  driveUrl:'https://docs.google.com/document/d/1kNeAXdphPjhHWnqeKsUE5v0Lmoo7cZZPXRf1_rseS7Y/edit?usp=sharing',
+  previewUrl:'https://docs.google.com/document/d/1kNeAXdphPjhHWnqeKsUE5v0Lmoo7cZZPXRf1_rseS7Y/preview',
+  audience:['Social media team','Team managers'],
+  desc:'Master reference for all social media clients — schedules, platforms, gems, and workflows.',
+  sections:['Absolute Air Services','Accounting Connections','Baber Law','Glasco HVAC','HSCM/HSPM','MMNT','Shapiro Auctions','The Learning Center','Building Blocks','Servpro','GBP Management'],
+  topics:['Sprout Social','Canva','Gemini Gems','Content approval','Monthly batching','Optimal posting times','Tracker spreadsheet','Press releases']};
+
+const smClients=[
+  {id:21,order:1,title:'Absolute Air Services',icon:'❄️',status:'live',pages:3,updated:'2025',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1cFYfi6-pVtOWa7M7b2penJygDDOjojGRZCZ5jHYBvpA/edit?usp=sharing',
+   previewUrl:'https://docs.google.com/document/d/1cFYfi6-pVtOWa7M7b2penJygDDOjojGRZCZ5jHYBvpA/preview',
+   platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
+   desc:'HVAC company social media SOP covering copywriting, Canva design and Sprout scheduling.',
+   sections:['Copywriting prompts','Canva design updates','Sprout Social scheduling'],
+   topics:['HVAC','Absolute Air','Facebook','Instagram','Canva','Sprout Social']},
+  {id:22,order:2,title:'Accounting Connections',icon:'📊',status:'live',pages:3,updated:'2025',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/12-L69Mf7ILLlaaxxlVHvcw58GLerMg_pV3YasNAUYSE/edit?usp=sharing',
+   previewUrl:'https://docs.google.com/document/d/12-L69Mf7ILLlaaxxlVHvcw58GLerMg_pV3YasNAUYSE/preview',
+   platforms:['Facebook','LinkedIn'],frequency:'3x/week',audience:['Social media team','Team managers'],
+   desc:'Accounting firm social media SOP for professional content on Facebook and LinkedIn.',
+   sections:['Copywriting prompts','Canva templates','LinkedIn best practices','Sprout scheduling'],
+   topics:['Accounting','Finance','Facebook','LinkedIn','Professional content','Canva']},
+  {id:23,order:3,title:'Baber Law',icon:'⚖️',status:'live',pages:3,updated:'2025',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1y0icu6ZYnyiY5SlDALjUpB7BzFJthpq1mHb7mScg2ws/edit?usp=sharing',
+   previewUrl:'https://docs.google.com/document/d/1y0icu6ZYnyiY5SlDALjUpB7BzFJthpq1mHb7mScg2ws/preview',
+   platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
+   desc:'Law firm social media SOP covering legal content, design and scheduling.',
+   sections:['Copywriting prompts','Canva templates','Approval process','Sprout scheduling'],
+   topics:['Law firm','Legal content','Facebook','Instagram','Canva','Approval']},
+  {id:24,order:4,title:'Glasco HVAC',icon:'🔧',status:'live',pages:3,updated:'2025',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1clYpb6SdTk60_GqWlpksVSiAolSWyPyL24IzOVJYWQI/edit?usp=sharing',
+   previewUrl:'https://docs.google.com/document/d/1clYpb6SdTk60_GqWlpksVSiAolSWyPyL24IzOVJYWQI/preview',
+   platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
+   desc:'HVAC contractor social media SOP for content creation and scheduling.',
+   sections:['Copywriting prompts','Canva design','Sprout Social scheduling'],
+   topics:['HVAC','Glasco','Facebook','Instagram','Canva','Sprout Social']},
+  {id:25,order:5,title:'HSCM / HSPM',icon:'🏥',status:'live',pages:3,updated:'2025',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1r_ewj10TmdZq6950YmNtiFvzGnIyP13Uq9hD141n9QU/edit?usp=sharing',
+   previewUrl:'https://docs.google.com/document/d/1r_ewj10TmdZq6950YmNtiFvzGnIyP13Uq9hD141n9QU/preview',
+   platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
+   desc:'Healthcare social media SOP covering HIPAA-compliant content and scheduling.',
+   sections:['Copywriting prompts','HIPAA compliance notes','Canva templates','Sprout scheduling'],
+   topics:['Healthcare','HIPAA','Facebook','Instagram','Canva','Compliance']},
+  {id:26,order:6,title:'MMNT',icon:'🎭',status:'live',pages:3,updated:'2025',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1fNaJpPhFXfS8bY2O6CtnbqqevVFWLVLtE7UjKWBscUI/edit?usp=sharing',
+   previewUrl:'https://docs.google.com/document/d/1fNaJpPhFXfS8bY2O6CtnbqqevVFWLVLtE7UjKWBscUI/preview',
+   platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
+   desc:'Entertainment/events social media SOP for engaging content and community management.',
+   sections:['Copywriting prompts','Event content','Canva templates','Sprout scheduling'],
+   topics:['Entertainment','Events','Facebook','Instagram','Community management','Canva']},
+  {id:27,order:7,title:'Shapiro Auctions',icon:'🏛️',status:'live',pages:3,updated:'2025',category:'Social Media',
+   driveUrl:'',previewUrl:'',
+   platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
+   desc:'Auction house social media SOP for showcasing items and driving bidder engagement.',
+   sections:['Copywriting prompts','Item photography','Canva templates','Sprout scheduling'],
+   topics:['Auctions','Antiques','Facebook','Instagram','Bidding','Canva']},
+  {id:28,order:8,title:'The Learning Center',icon:'📚',status:'live',pages:3,updated:'2025',category:'Social Media',
+   driveUrl:'',previewUrl:'',
+   platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
+   desc:'Childcare/education social media SOP for The Learning Center.',
+   sections:['Copywriting prompts','Brightwheel image sourcing','Canva templates','Sprout scheduling'],
+   topics:['Childcare','Education','Facebook','Instagram','Brightwheel','Canva']},
+  {id:29,order:9,title:'Building Blocks',icon:'🧱',status:'live',pages:1,updated:'2025',category:'Social Media',
+   driveUrl:'',previewUrl:'',
+   platforms:['Facebook','LinkedIn'],frequency:'3x/week',audience:['Social media team'],
+   desc:'Sister brand to The Learning Center — reuse TLC Canva templates, change all copy to Building Blocks of Windsor.',
+   sections:['Reuse TLC Canva templates','Pull images from Brightwheel – TLC Sheryl only','Use Learning Center Gem renamed to Building Blocks','Schedule in Sprout Social'],
+   topics:['Childcare','Building Blocks of Windsor','Brightwheel TLC Sheryl','NOT TLC Frank or TLC Thomas','Reuse TLC templates']},
+  {id:30,order:10,title:'Servpro',icon:'📰',status:'live',pages:1,updated:'2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1utLthjTfSjsn_XptWSPXSHVJGRonTo5zzfpBho_X5Fs/edit?usp=sharing',
+   previewUrl:'https://docs.google.com/document/d/1utLthjTfSjsn_XptWSPXSHVJGRonTo5zzfpBho_X5Fs/preview',
+   platforms:['Press Release','Media Outreach'],frequency:'As needed',audience:['Content team','Team managers'],
+   desc:'Press release SOP for Servpro — disaster restoration company. Covers drafting, approval and distribution.',
+   sections:['Review template & brand voice','Draft press release','Internal review & approval','Distribution'],
+   topics:['Press release','Servpro','Disaster restoration','Media outreach','AP style','Distribution']},
+  {id:31,order:11,title:'Google Business Profile (GBP) Management',icon:'📍',isGbpSop:true,status:'live',pages:1,updated:'2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/12VbVNCVaT4zNDNd47rpp8velI5MnVYEt/edit?usp=sharing',
+   previewUrl:'https://docs.google.com/document/d/12VbVNCVaT4zNDNd47rpp8velI5MnVYEt/preview',
+   platforms:['Google Business Profile','Google Maps','Google Search'],frequency:'Monthly + yearly audit',
+   audience:['Social media & GBP team','Team managers'],
+   desc:'Monthly maintenance & yearly full audit for all client GBP listings. Agency-wide SOP.',
+   sections:['Before every session — open tracker, check Profile Strength','Monthly tasks — services audit, SEO descriptions','Monthly info check — social links, phone, hours','Monthly completion — update tracker','Yearly full audit','Yearly completion','Quick reference table'],
+   topics:['GBP management','Profile Strength ring','Services audit','SEO descriptions','Gemini prompts','300-character limit','IWP media library','BigStock','Video verification warning','Client tracker','WLM escalation','Local SEO']}
+];
+
+// ─── CUSTOM SOPs FROM LOCALSTORAGE ────────────────────────────
+function getCustomSops(){try{return JSON.parse(localStorage.getItem('wl_custom_sops')||'[]');}catch{return[];}}
+function saveCustomSops(arr){localStorage.setItem('wl_custom_sops',JSON.stringify(arr));}
+function getCustomTabs(){try{return JSON.parse(localStorage.getItem('wl_custom_tabs')||'[]');}catch{return[];}}
+function saveCustomTabs(arr){localStorage.setItem('wl_custom_tabs',JSON.stringify(arr));}
+
+// ─── CATEGORIES ───────────────────────────────────────────────
+const BASE_CATEGORIES=['All','Operations','People & HR','Projects','Social Media','Design & Brand','Client Management'];
+const CAT_ICONS={'All':'🗂️','Operations':'🏢','People & HR':'👥','Projects':'📋','Social Media':'📱','Design & Brand':'🎨','Client Management':'💬'};
+let activeFilter='All';
+
+function getAllCategories(){
+  const tabs=getCustomTabs();
+  return [...BASE_CATEGORIES,...tabs.filter(t=>!BASE_CATEGORIES.includes(t))];
+}
+
+// ─── THEME ────────────────────────────────────────────────────
+function toggleTheme(){
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',isDark?'light':'dark');
+  localStorage.setItem('wl_theme',isDark?'light':'dark');
+  document.getElementById('theme-icon').textContent=isDark?'🌙':'☀️';
+  document.getElementById('theme-label').textContent=isDark?'Dark Mode':'Light Mode';
+}
+(function(){
+  const t=localStorage.getItem('wl_theme')||'light';
+  document.documentElement.setAttribute('data-theme',t);
+  if(document.getElementById('theme-icon')){
+    document.getElementById('theme-icon').textContent=t==='dark'?'☀️':'🌙';
+    document.getElementById('theme-label').textContent=t==='dark'?'Light Mode':'Dark Mode';
+  }
+})();
+
+// ─── RENDER SIDEBAR ───────────────────────────────────────────
+function renderSidebar(){
+  const cats=getAllCategories();
+  const nav=document.getElementById('sidebar-nav');
+  if(!nav)return;
+  nav.innerHTML='<div class="nav-section">Categories</div>'+
+    cats.map(c=>`<div class="nav-item${activeFilter===c?' active':''}" onclick="setFilter('${c.replace(/'/g,"\\'")}')">
+      <span class="nav-icon">${CAT_ICONS[c]||'📁'}</span>${c}</div>`).join('');
+}
+
+function setFilter(cat){
+  activeFilter=cat;
+  document.getElementById('header-title').textContent=cat==='All'?'All SOPs':cat;
+  render();
+}
+
+// ─── MERGE ALL SOPs ───────────────────────────────────────────
+function getAllSops(){
+  const custom=getCustomSops();
+  return [...coreSops,...smClients,[smWiki],...custom];
+}
+
+// ─── RENDER MAIN ──────────────────────────────────────────────
+function render(){
+  renderSidebar();
+  const q=(document.getElementById('search-input')||{}).value||'';
+  const ql=q.toLowerCase();
+  const body=document.getElementById('main-body');
+  if(!body)return;
+
+  const allSops=getAllSops();
+  const customSops=getCustomSops();
+
+  // Stats
+  const liveCount=allSops.filter(s=>s.status==='live').length;
+  const soonCount=allSops.filter(s=>s.status==='coming-soon').length;
+  const smCount=smClients.length+customSops.filter(s=>s.placement==='social-client').length;
+
+  let html='';
+
+  // Admin panel
+  if(adminMode){html+=renderAdminPanel();}
+
+  // Stats
+  html+=`<div class="stats-row">
+    <div class="stat-card"><div class="stat-val">${allSops.length}</div><div class="stat-label">Total SOPs</div></div>
+    <div class="stat-card"><div class="stat-val">${liveCount}</div><div class="stat-label">Live</div></div>
+    <div class="stat-card"><div class="stat-val">${soonCount}</div><div class="stat-label">Coming Soon</div></div>
+    <div class="stat-card"><div class="stat-val">${smCount}</div><div class="stat-label">SM Clients</div></div>
+  </div>`;
+
+  // Filter pills
+  html+=`<div class="filter-row">${getAllCategories().map(c=>`<div class="pill${activeFilter===c?' active':''}" onclick="setFilter('${c.replace(/'/g,"\\'")}')">
+    ${CAT_ICONS[c]||'📁'} ${c}</div>`).join('')}</div>`;
+
+  const showAll=activeFilter==='All';
+  const showSM=showAll||activeFilter==='Social Media';
+
+  // Core / category SOPs
+  const coreFiltered=[...coreSops,...customSops.filter(s=>s.placement==='core')].filter(s=>{
+    const catMatch=showAll||(s.category===activeFilter);
+    if(!catMatch)return false;
+    if(!ql)return true;
+    return (s.title+s.desc+(s.topics||[]).join(' ')+(s.audience||[]).join(' ')).toLowerCase().includes(ql);
+  });
+
+  // Custom main-tab SOPs
+  const customTabs=getCustomTabs();
+  const customTabSops=customTabs.map(tab=>{
+    const sops=customSops.filter(s=>s.placement===tab);
+    return {tab,sops};
+  });
+
+  if(coreFiltered.length>0){
+    html+=`<div class="section-header"><div class="section-title">📂 Core SOPs <span class="section-count">${coreFiltered.length}</span></div></div>`;
+    html+=`<div class="cards-grid">${coreFiltered.map(s=>renderCard(s)).join('')}</div>`;
+  }
+
+  // Custom tab sections
+  customTabSops.forEach(({tab,sops})=>{
+    if(!showAll&&activeFilter!==tab)return;
+    const filtered=sops.filter(s=>{
+      if(!ql)return true;
+      return (s.title+s.desc+(s.topics||[]).join(' ')).toLowerCase().includes(ql);
+    });
+    if(filtered.length>0){
+      html+=`<div class="section-header"><div class="section-title">${CAT_ICONS[tab]||'📁'} ${tab} <span class="section-count">${filtered.length}</span></div></div>`;
+      html+=`<div class="cards-grid">${filtered.map(s=>renderCard(s)).join('')}</div>`;
+    }
+  });
+
+  // Social Media section
+  if(showSM){
+    const smClientsAll=[...smClients,...customSops.filter(s=>s.placement==='social-client')];
+    const smFiltered=smClientsAll.filter(s=>{
+      if(!ql)return true;
+      return (s.title+s.desc+(s.topics||[]).join(' ')+(s.platforms||[]).join(' ')).toLowerCase().includes(ql);
+    });
+    const wikiMatch=!ql||(smWiki.title+smWiki.desc+(smWiki.topics||[]).join(' ')).toLowerCase().includes(ql);
+    const gbpSop=smClients.find(s=>s.isGbpSop);
+    const nonGbpFiltered=smFiltered.filter(s=>!s.isGbpSop);
+
+    if(wikiMatch||smFiltered.length>0){
+      html+=`<div class="section-header"><div class="section-title">📱 Social Media <span class="section-count">${smClientsAll.length+1}</span></div></div>`;
+      if(wikiMatch){
+        html+=`<div class="sm-wiki-card" onclick="openModal(20)">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+            <span style="font-size:24px">${smWiki.icon}</span>
+            <div><div style="font-weight:700;font-size:15px">${smWiki.title}</div>
+            <div style="font-size:12px;color:var(--text3)">${smWiki.pages} pages · Updated ${smWiki.updated}</div></div>
+            <span class="badge badge-live" style="margin-left:auto">LIVE</span>
+          </div>
+          <div style="font-size:13px;color:var(--text2)">${smWiki.desc}</div>
+        </div>`;
+      }
+      if(gbpSop&&(!ql||(gbpSop.title+gbpSop.desc+(gbpSop.topics||[]).join(' ')).toLowerCase().includes(ql))){
+        html+=`<div class="gbp-card-featured" onclick="openModal(${gbpSop.id})">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+            <span style="font-size:24px">${gbpSop.icon}</span>
+            <div><div style="font-weight:700;font-size:15px">${gbpSop.title}</div>
+            <div style="font-size:12px;color:var(--text3)">${(gbpSop.platforms||[]).join(' · ')} · ${gbpSop.frequency}</div></div>
+            <span class="badge" style="background:var(--bluebg);color:var(--blue);margin-left:auto">GBP SOP</span>
+          </div>
+          <div style="font-size:13px;color:var(--text2)">${gbpSop.desc}</div>
+        </div>`;
+      }
+      if(nonGbpFiltered.length>0){
+        html+=`<div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Individual Client SOPs</div>`;
+        html+=`<div class="client-tiles">${nonGbpFiltered.map(s=>renderClientTile(s)).join('')}</div>`;
+      }
+    }
+  }
+
+  if(html.replace(/<[^>]+>/g,'').trim()===''||(!coreFiltered.length&&!showSM&&customTabSops.every(({sops})=>!sops.length))){
+    html+=`<div class="no-results"><div class="no-results-icon">🔍</div><div>No SOPs found for "<strong>${q}</strong>"</div></div>`;
+  }
+
+  body.innerHTML=html;
+  if(adminMode)body.classList.add('admin-mode');
+  else body.classList.remove('admin-mode');
+}
+
+function renderCard(s){
+  const editBtns=adminMode?`<div class="admin-card-btns">
+    <button class="edit-btn" onclick="event.stopPropagation();openEditForm(${s.id})">✏️</button>
+    <button class="del-btn" onclick="event.stopPropagation();deleteSop(${s.id})">🗑️</button>
+  </div>`:'';
+  return `<div class="sop-card" onclick="openModal(${s.id})">
+    ${editBtns}
+    <div class="sop-card-top">
+      <span class="sop-icon">${s.icon||'📄'}</span>
+      <div class="sop-badges">
+        <span class="badge ${s.status==='live'?'badge-live':'badge-soon'}">${s.status==='live'?'LIVE':'SOON'}</span>
+        ${s.pages?`<span class="badge" style="background:var(--bg3);color:var(--text3)">${s.pages}p</span>`:''}
+      </div>
+    </div>
+    <div class="sop-title">${s.title}</div>
+    <div class="sop-desc">${s.desc||''}</div>
+    <div class="sop-meta">
+      ${(s.audience||[]).map(a=>`<span class="tag">${a}</span>`).join('')}
+      ${s.updated?`<span class="tag">📅 ${s.updated}</span>`:''}
+    </div>
+  </div>`;
+}
+
+function renderClientTile(s){
+  const editBtns=adminMode?`<div style="display:flex;gap:4px;margin-top:6px">
+    <button class="edit-btn" onclick="event.stopPropagation();openEditForm(${s.id})" style="width:24px;height:24px;font-size:12px">✏️</button>
+    <button class="del-btn" onclick="event.stopPropagation();deleteSop(${s.id})" style="width:24px;height:24px;font-size:12px">🗑️</button>
+  </div>`:'';
+  return `<div class="client-tile" onclick="openModal(${s.id})">
+    <div class="client-tile-top">
+      <span class="client-icon">${s.icon||'📱'}</span>
+      <div class="client-title">${s.title}</div>
+    </div>
+    <div class="client-platforms">${(s.platforms||[]).map(p=>`<span class="tag">${p}</span>`).join('')}</div>
+    <div class="client-freq">${s.frequency||''}</div>
+    ${editBtns}
+  </div>`;
+}
+
+// ─── ADMIN PANEL HTML ─────────────────────────────────────────
+function renderAdminPanel(){
+  const allSopsForEdit=[...coreSops,...smClients,[smWiki],...getCustomSops()];
+  return `<div class="admin-panel">
+    <div class="admin-panel-title">🔧 Admin Panel <button class="btn-secondary" style="margin-left:auto;font-size:11px" onclick="adminMode=false;document.getElementById('admin-btn').classList.remove('active-admin');document.getElementById('admin-btn').textContent='🔧 Admin';render()">Exit Admin</button></div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">🔑 Passcodes</div>
+      <div class="pass-row">
+        <div class="form-group">
+          <label class="form-label">App Entry Passcode</label>
+          <input class="form-input" id="new-app-pass" type="text" placeholder="${getCurrentAppPass()}"/>
+        </div>
+        <button class="btn-primary" onclick="saveAppPass()">Save</button>
+        <button class="btn-secondary" onclick="resetAppPass()">Reset</button>
+      </div>
+      <div class="pass-row">
+        <div class="form-group">
+          <label class="form-label">Admin Passcode</label>
+          <input class="form-input" id="new-admin-pass" type="text" placeholder="${getCurrentAdminPass()}"/>
+        </div>
+        <button class="btn-primary" onclick="saveAdminPass()">Save</button>
+        <button class="btn-secondary" onclick="resetAdminPass()">Reset</button>
+      </div>
+      <div id="pass-msg" class="success-msg"></div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">➕ Add New SOP</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="new-title" placeholder="SOP Title"/></div>
+        <div class="form-group"><label class="form-label">Icon (emoji)</label><input class="form-input" id="new-icon" placeholder="📄" maxlength="4"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Drive URL</label><input class="form-input" id="new-drive" placeholder="https://docs.google.com/..."/></div>
+        <div class="form-group"><label class="form-label">Preview URL</label><input class="form-input" id="new-preview" placeholder="https://docs.google.com/.../preview"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Category</label>
+          <select class="form-select" id="new-category">
+            <option>Operations</option><option>People & HR</option><option>Projects</option>
+            <option>Social Media</option><option>Design & Brand</option><option>Client Management</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="new-status"><option value="live">Live</option><option value="coming-soon">Coming Soon</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Audience (comma separated)</label><input class="form-input" id="new-audience" placeholder="All team members, Team managers"/></div>
+        <div class="form-group"><label class="form-label">Platforms / Tags</label><input class="form-input" id="new-platforms" placeholder="Facebook, Instagram"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Frequency</label><input class="form-input" id="new-freq" placeholder="3x/week"/></div>
+        <div class="form-group"><label class="form-label">Pages</label><input class="form-input" id="new-pages" type="number" placeholder="1"/></div>
+      </div>
+      <div class="form-row single">
+        <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="new-desc" placeholder="Brief description of this SOP..."></textarea></div>
+      </div>
+      <div class="form-row single">
+        <div class="form-group"><label class="form-label">Sections (one per line)</label><textarea class="form-textarea" id="new-sections" placeholder="Section 1&#10;Section 2&#10;Section 3"></textarea></div>
+      </div>
+      <div class="form-row single">
+        <div class="form-group"><label class="form-label">Topics (comma separated)</label><input class="form-input" id="new-topics" placeholder="Topic 1, Topic 2, Topic 3"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Tab Placement *</label>
+          <select class="form-select" id="new-placement" onchange="toggleTabNameInput()">
+            <option value="core">Core Operations</option>
+            <option value="social-client">Social Media Client Tile</option>
+            <option value="new-tab">New Main Tab</option>
+          </select>
+        </div>
+        <div class="form-group" id="new-tab-name-wrap" style="display:none">
+          <label class="form-label">New Tab Name</label>
+          <input class="form-input" id="new-tab-name" placeholder="e.g. GBP Management"/>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="addNewSop()">➕ Add SOP</button>
+      <div id="add-msg" class="success-msg" style="margin-top:8px"></div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">✏️ Edit / Delete Existing SOPs</div>
+      <div class="sop-edit-list">
+        ${allSopsForEdit.map(s=>`
+          <div>
+            <div class="sop-edit-item">
+              <span>${s.icon||'📄'}</span>
+              <span class="sop-edit-name">${s.title}</span>
+              <button class="edit-btn" onclick="toggleEditForm('edit-${s.id}')">✏️ Edit</button>
+              ${getCustomSops().find(c=>c.id===s.id)?`<button class="del-btn" onclick="deleteSop(${s.id})">🗑️</button>`:''}
+            </div>
+            <div class="sop-edit-form" id="edit-${s.id}">
+              <div class="form-row">
+                <div class="form-group"><label class="form-label">Title</label><input class="form-input" id="e-title-${s.id}" value="${(s.title||'').replace(/"/g,'&quot;')}"/></div>
+                <div class="form-group"><label class="form-label">Icon</label><input class="form-input" id="e-icon-${s.id}" value="${s.icon||''}" maxlength="4"/></div>
+              </div>
+              <div class="form-row single">
+                <div class="form-group"><label class="form-label">Google Drive URL</label><input class="form-input" id="e-drive-${s.id}" value="${(s.driveUrl||'').replace(/"/g,'&quot;')}"/></div>
+              </div>
+              <div class="form-row single">
+                <div class="form-group"><label class="form-label">Preview URL</label><input class="form-input" id="e-preview-${s.id}" value="${(s.previewUrl||'').replace(/"/g,'&quot;')}"/></div>
+              </div>
+              <div class="form-row single">
+                <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="e-desc-${s.id}">${s.desc||''}</textarea></div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <button class="btn-primary" onclick="saveEdit(${s.id})">💾 Save</button>
+                <button class="btn-secondary" onclick="toggleEditForm('edit-${s.id}')">Cancel</button>
+              </div>
+              <div id="edit-msg-${s.id}" class="success-msg" style="margin-top:6px"></div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleTabNameInput(){
+  const p=document.getElementById('new-placement');
+  document.getElementById('new-tab-name-wrap').style.display=p&&p.value==='new-tab'?'block':'none';
+}
+
+// ─── PASSCODE MANAGEMENT ──────────────────────────────────────
+function saveAppPass(){
+  const v=(document.getElementById('new-app-pass')||{}).value||'';
+  if(!v.trim()){showPassMsg('Please enter a passcode.');return;}
+  localStorage.setItem('wl_app_pass',v.trim());
+  showPassMsg('App passcode updated! ✅');
+}
+function resetAppPass(){localStorage.removeItem('wl_app_pass');showPassMsg('App passcode reset to default. ✅');}
+function saveAdminPass(){
+  const v=(document.getElementById('new-admin-pass')||{}).value||'';
+  if(!v.trim()){showPassMsg('Please enter a passcode.');return;}
+  localStorage.setItem('wl_admin_pass',v.trim());
+  showPassMsg('Admin passcode updated! ✅');
+}
+function resetAdminPass(){localStorage.removeItem('wl_admin_pass');showPassMsg('Admin passcode reset to default. ✅');}
+function showPassMsg(m){const el=document.getElementById('pass-msg');if(el){el.textContent=m;setTimeout(()=>{if(el)el.textContent='';},3000);}}
+
+// ─── ADD SOP ──────────────────────────────────────────────────
+function addNewSop(){
+  const title=(document.getElementById('new-title')||{}).value||'';
+  if(!title.trim()){document.getElementById('add-msg').textContent='Title is required!';return;}
+  const placement=(document.getElementById('new-placement')||{}).value||'core';
+  const tabName=placement==='new-tab'?(document.getElementById('new-tab-name')||{}).value||'New Tab':'';
+  const finalPlacement=placement==='new-tab'?tabName:placement;
+  const driveUrl=(document.getElementById('new-drive')||{}).value||'';
+  const previewUrl=(document.getElementById('new-preview')||{}).value||driveUrl.replace('/edit','/preview').replace('/view','/preview');
+  const newSop={
+    id:Date.now(),
+    title:title.trim(),
+    icon:(document.getElementById('new-icon')||{}).value||'📄',
+    status:(document.getElementById('new-status')||{}).value||'live',
+    pages:parseInt((document.getElementById('new-pages')||{}).value)||0,
+    updated:new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'}),
+    category:(document.getElementById('new-category')||{}).value||'Operations',
+    driveUrl,previewUrl,
+    audience:((document.getElementById('new-audience')||{}).value||'').split(',').map(s=>s.trim()).filter(Boolean),
+    platforms:((document.getElementById('new-platforms')||{}).value||'').split(',').map(s=>s.trim()).filter(Boolean),
+    frequency:(document.getElementById('new-freq')||{}).value||'',
+    desc:(document.getElementById('new-desc')||{}).value||'',
+    sections:((document.getElementById('new-sections')||{}).value||'').split('\n').map(s=>s.trim()).filter(Boolean),
+    topics:((document.getElementById('new-topics')||{}).value||'').split(',').map(s=>s.trim()).filter(Boolean),
+    placement:finalPlacement
+  };
+  const custom=getCustomSops();custom.push(newSop);saveCustomSops(custom);
+  if(placement==='new-tab'&&tabName){const tabs=getCustomTabs();if(!tabs.includes(tabName)){tabs.push(tabName);saveCustomTabs(tabs);}}
+  document.getElementById('add-msg').textContent='SOP added! ✅';
+  setTimeout(()=>render(),800);
+}
+
+// ─── EDIT SOP ─────────────────────────────────────────────────
+function toggleEditForm(id){
+  const el=document.getElementById(id);
+  if(el)el.classList.toggle('open');
+}
+
+function openEditForm(id){
+  const formId=`edit-${id}`;
+  document.querySelectorAll('.sop-edit-form').forEach(f=>{if(f.id!==formId)f.classList.remove('open');});
+  const el=document.getElementById(formId);
+  if(el)el.classList.add('open');
+  el&&el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function saveEdit(id){
+  // Check if it's a custom SOP
+  const custom=getCustomSops();
+  const idx=custom.findIndex(s=>s.id===id);
+  if(idx>-1){
+    custom[idx].title=document.getElementById(`e-title-${id}`).value||custom[idx].title;
+    custom[idx].icon=document.getElementById(`e-icon-${id}`).value||custom[idx].icon;
+    custom[idx].driveUrl=document.getElementById(`e-drive-${id}`).value;
+    custom[idx].previewUrl=document.getElementById(`e-preview-${id}`).value;
+    custom[idx].desc=document.getElementById(`e-desc-${id}`).value;
+    saveCustomSops(custom);
+  } else {
+    // Save override for built-in SOP
+    const overrides=JSON.parse(localStorage.getItem('wl_overrides')||'{}');
+    overrides[id]={
+      title:document.getElementById(`e-title-${id}`).value,
+      icon:document.getElementById(`e-icon-${id}`).value,
+      driveUrl:document.getElementById(`e-drive-${id}`).value,
+      previewUrl:document.getElementById(`e-preview-${id}`).value,
+      desc:document.getElementById(`e-desc-${id}`).value,
+    };
+    localStorage.setItem('wl_overrides',JSON.stringify(overrides));
+    applyOverrides();
+  }
+  const msg=document.getElementById(`edit-msg-${id}`);
+  if(msg){msg.textContent='Saved! ✅';setTimeout(()=>{if(msg)msg.textContent='';},2000);}
+  setTimeout(()=>render(),600);
+}
+
+function applyOverrides(){
+  const overrides=JSON.parse(localStorage.getItem('wl_overrides')||'{}');
+  [...coreSops,...smClients,[smWiki]].forEach(s=>{
+    if(overrides[s.id]){Object.assign(s,overrides[s.id]);}
+  });
+}
+applyOverrides();
+
+function deleteSop(id){
+  if(!confirm('Delete this SOP? This cannot be undone.'))return;
+  const custom=getCustomSops().filter(s=>s.id!==id);
+  saveCustomSops(custom);
+  render();
+}
+
+// ─── MODAL ────────────────────────────────────────────────────
+let currentSopId=null;
+function openModal(id){
+  const all=[...coreSops,...smClients,[smWiki],...getCustomSops()];
+  const s=all.find(x=>x.id===id);
+  if(!s)return;
+  currentSopId=id;
+  document.getElementById('m-icon').textContent=s.icon||'📄';
+  document.getElementById('m-title').textContent=s.title;
+  document.getElementById('m-sub').textContent=`${s.category||''} · ${s.pages||0} pages · Updated ${s.updated||''}`;
+
+  // Details tab
+  let details=``;
+  if(s.desc)details+=`<div class="modal-section"><div class="modal-section-title">About</div><p style="font-size:13px;color:var(--text2);line-height:1.6">${s.desc}</p></div>`;
+  if(s.sections&&s.sections.length)details+=`<div class="modal-section"><div class="modal-section-title">Sections (${s.sections.length})</div>
+    <div class="sections-list">${s.sections.map((sec,i)=>`<div class="section-item"><span class="section-num">${i+1}</span>${sec}</div>`).join('')}</div></div>`;
+  if(s.topics&&s.topics.length)details+=`<div class="modal-section"><div class="modal-section-title">Topics</div>
+    <div class="modal-tags">${s.topics.map(t=>`<span class="modal-tag">${t}</span>`).join('')}</div></div>`;
+  if(s.audience&&s.audience.length)details+=`<div class="modal-section"><div class="modal-section-title">Audience</div>
+    <div class="modal-tags">${s.audience.map(a=>`<span class="modal-tag">👤 ${a}</span>`).join('')}</div></div>`;
+  if(s.platforms&&s.platforms.length)details+=`<div class="modal-section"><div class="modal-section-title">Platforms</div>
+    <div class="modal-tags">${s.platforms.map(p=>`<span class="modal-tag">📱 ${p}</span>`).join('')}</div></div>`;
+  if(s.frequency)details+=`<div class="modal-section"><div class="modal-section-title">Posting Frequency</div>
+    <span class="modal-tag">🗓 ${s.frequency}</span></div>`;
+  if(s.driveUrl)details+=`<div class="modal-section"><a href="${s.driveUrl}" target="_blank" class="drive-btn">📂 Open in Google Drive</a></div>`;
+
+  document.getElementById('modal-details-body').innerHTML=details||'<p style="color:var(--text3);font-size:13px">No details available yet.</p>';
+
+  // Preview tab
+  let preview='';
+  if(s.previewUrl)preview=`<iframe class="preview-frame" src="${s.previewUrl}" frameborder="0" allowfullscreen></iframe>`;
+  else preview=`<div class="preview-placeholder"><span style="font-size:36px">📄</span><span>No preview available</span><span style="font-size:12px">Add a Google Drive URL to enable live preview</span></div>`;
+  document.getElementById('modal-preview-body').innerHTML=preview;
+
+  switchTab('details');
+  document.getElementById('sop-modal').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('sop-modal').classList.remove('open');
+  document.getElementById('modal-preview-body').innerHTML='';
+}
+function switchTab(tab){
+  document.getElementById('tab-details').classList.toggle('active',tab==='details');
+  document.getElementById('tab-preview').classList.toggle('active',tab==='preview');
+  document.getElementById('modal-details-body').style.display=tab==='details'?'block':'none';
+  document.getElementById('modal-preview-body').style.display=tab==='preview'?'block':'none';
+}
+
+// Close modal on overlay click
+document.getElementById('sop-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){closeModal();closeAdminModal();}
+  if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();document.getElementById('search-input')&&document.getElementById('search-input').focus();}
+});
+
+// ─── INIT ─────────────────────────────────────────────────────
+if(sessionStorage.getItem('wl_authenticated')==='1'){
+  render();
+  const t=localStorage.getItem('wl_theme')||'light';
+  document.getElementById('theme-icon').textContent=t==='dark'?'☀️':'🌙';
+  document.getElementById('theme-label').textContent=t==='dark'?'Light Mode':'Dark Mode';
+}
+</script>
+</body>
+</html>
