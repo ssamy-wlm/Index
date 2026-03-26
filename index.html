@@ -616,7 +616,7 @@ function setFilter(cat){
 // ─── MERGE ALL SOPs ───────────────────────────────────────────
 function getAllSops(){
   const custom=getCustomSops();
-  return [...coreSops,...smClients,[smWiki],...custom];
+  return [...coreSops,...smClients,smWiki,...custom];
 }
 
 // ─── RENDER MAIN ──────────────────────────────────────────────
@@ -780,7 +780,7 @@ function renderClientTile(s){
 
 // ─── ADMIN PANEL HTML ─────────────────────────────────────────
 function renderAdminPanel(){
-  const allSopsForEdit=[...coreSops,...smClients,[smWiki],...getCustomSops()];
+  const allSopsForEdit=[...coreSops,...smClients,smWiki,...getCustomSops()];
 
   return `<div class="admin-panel">
     <div class="admin-panel-title">
@@ -968,11 +968,16 @@ function saveEdit(id){
   if(msg){msg.textContent='Saved! ✅';setTimeout(()=>{if(msg)msg.textContent='';},2000);}
   setTimeout(()=>render(),600);
 }
-
 function applyOverrides(){
-  const overrides=JSON.parse(localStorage.getItem('wl_overrides')||'{}');
-  [...coreSops,...smClients,[smWiki]].forEach(s=>{
-    if(overrides[s.id]){Object.assign(s,overrides[s.id]);}
+  let overrides={};
+  try{
+    overrides=JSON.parse(localStorage.getItem('wl_overrides')||'{}');
+  }catch{
+    overrides={};
+    localStorage.removeItem('wl_overrides');
+  }
+  [...coreSops,...smClients,smWiki].forEach(s=>{
+    if(s && overrides[s.id]) Object.assign(s, overrides[s.id]);
   });
 }
 applyOverrides();
@@ -987,7 +992,7 @@ function deleteSop(id){
 // ─── MODAL ────────────────────────────────────────────────────
 let currentSopId=null;
 function openModal(id){
-  const all=[...coreSops,...smClients,[smWiki],...getCustomSops()];
+  const all=[...coreSops,...smClients,smWiki,...getCustomSops()];
   const s=all.find(x=>x.id===id);
   if(!s)return;
   currentSopId=id;
