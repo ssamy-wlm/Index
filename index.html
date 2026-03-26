@@ -402,9 +402,37 @@ const smWiki={id:20,title:'Social Media Clients — Master Wiki',icon:'📚',sta
   previewUrl:'https://docs.google.com/document/d/1kNeAXdphPjhHWnqeKsUE5v0Lmoo7cZZPXRf1_rseS7Y/preview',
   audience:['Social media team','Team managers'],
   desc:'Master reference for all social media clients — schedules, platforms, gems, and workflows.',
-  sections:['Absolute Air Services','Accounting Connections','Baber Law','Glasco HVAC','HSCM/HSPM','MMNT','Shapiro Auctions','The Learning Center','Building Blocks','Servpro','GBP Management'],
-  topics:['Sprout Social','Canva','Gemini Gems','Content approval','Monthly batching','Optimal posting times','Tracker spreadsheet','Press releases']};
-
+sections:[
+  'Absolute Air Services',
+  'Accounting Connections',
+  'Baber Law',
+  'Glasco HVAC',
+  'HSCM/HSPM',
+  'MMNT',
+  'Shapiro Auctions',
+  'The Learning Center',
+  'Building Blocks',
+  'Servpro',
+  'GBP Management',
+  'Review Replies',
+  'Website Hosting & Functionality Check'
+],
+topics:[
+  'Sprout Social',
+  'Canva',
+  'Gemini Gems',
+  'Content approval',
+  'Monthly batching',
+  'Optimal posting times',
+  'Tracker spreadsheet',
+  'Press releases',
+  'Review replies',
+  'GBP reviews',
+  'Website QA',
+  'Broken buttons',
+  'Broken layouts'
+]
+]};
 const smClients=[
   {id:21,order:1,title:'Absolute Air Services',icon:'❄️',status:'live',pages:3,updated:'2025',category:'Social Media',
    driveUrl:'https://docs.google.com/document/d/1cFYfi6-pVtOWa7M7b2penJygDDOjojGRZCZ5jHYBvpA/edit?usp=sharing',
@@ -481,6 +509,60 @@ const smClients=[
    desc:'Monthly maintenance & yearly full audit for all client GBP listings. Agency-wide SOP.',
    sections:['Before every session — open tracker, check Profile Strength','Monthly tasks — services audit, SEO descriptions','Monthly info check — social links, phone, hours','Monthly completion — update tracker','Yearly full audit','Yearly completion','Quick reference table'],
    topics:['GBP management','Profile Strength ring','Services audit','SEO descriptions','Gemini prompts','300-character limit','IWP media library','BigStock','Video verification warning','Client tracker','WLM escalation','Local SEO']}
+,
+  {id:32,order:12,title:'Review Replies',icon:'⭐',status:'live',pages:1,updated:'March 2026',category:'Social Media',
+   driveUrl:'https://drive.google.com/file/d/1cyvhj2I0pWyQ7s_3XCuzYvEhC6_1_ffE/view?usp=sharing',
+   previewUrl:'https://drive.google.com/file/d/1cyvhj2I0pWyQ7s_3XCuzYvEhC6_1_ffE/preview',
+   platforms:['Google Business Profile','Review Management'],frequency:'Weekly — Every Monday morning',
+   audience:['Social media & GBP team','Team managers'],
+   desc:'Weekly SOP for monitoring and responding to Google Business Profile reviews for WebLight Media clients. Positive reviews are answered on behalf of the client; negative reviews are left for the client and escalated when needed.',
+   sections:[
+     'Access the service Chrome profile',
+     'Access & open each client GBP',
+     'View new reviews since the previous Monday',
+     'Respond to positive reviews only',
+     'Proofing & completion in Asana',
+     'Quick reference summary'
+   ],
+   topics:[
+     'Google Business Profile',
+     'Review replies',
+     'Weekly Monday task',
+     'Positive reviews',
+     'Negative review escalation',
+     'service@weblightmedia.com',
+     'GBP Manager',
+     'Asana'
+   ]},
+
+  {id:33,order:13,title:'Website Hosting & Functionality Check',icon:'🌐',status:'live',pages:1,updated:'March 2026',category:'Social Media',
+   driveUrl:'https://drive.google.com/file/d/1M_hSNWB004v83pt0jnpELksAs_Qc8GrE/view?usp=sharing',
+   previewUrl:'https://drive.google.com/file/d/1M_hSNWB004v83pt0jnpELksAs_Qc8GrE/preview',
+   platforms:['Client Websites','QA','Google Chrome'],frequency:'Weekly — Every Monday',
+   audience:['Social media team','Team managers'],
+   desc:'Weekly SOP for checking client websites for uptime and front-end functionality issues including broken layouts, missing images, broken buttons, and page errors before clients notice them.',
+   sections:[
+     'Set up for the check in Chrome Incognito',
+     'Front-end website check',
+     'Check homepage layout, images, formatting, and buttons',
+     'Spot-check one subpage',
+     'Report issues immediately with screenshots',
+     'Quick reference — what to check'
+   ],
+   topics:[
+     'Website hosting check',
+     'Website functionality check',
+     'Weekly Monday task',
+     'Google Chrome Incognito',
+     'Broken buttons',
+     'Missing images',
+     '404 errors',
+     '500 errors',
+     'Client websites',
+     'Screenshot reporting',
+     'bbynes@weblightmedia.com',
+     'david@weblightmedia.com'
+   ]}
 ];
 
 // ─── CUSTOM SOPs FROM LOCALSTORAGE ────────────────────────────
@@ -661,8 +743,8 @@ function render(){
 function renderCard(s){
   const editBtns=adminMode?`<div class="admin-card-btns">
     <button class="edit-btn" onclick="event.stopPropagation();openEditForm(${s.id})">✏️</button>
-    <button class="del-btn" onclick="event.stopPropagation();deleteSop(${s.id})">🗑️</button>
   </div>`:'';
+
   return `<div class="sop-card" onclick="openModal(${s.id})">
     ${editBtns}
     <div class="sop-card-top">
@@ -684,8 +766,8 @@ function renderCard(s){
 function renderClientTile(s){
   const editBtns=adminMode?`<div style="display:flex;gap:4px;margin-top:6px">
     <button class="edit-btn" onclick="event.stopPropagation();openEditForm(${s.id})" style="width:24px;height:24px;font-size:12px">✏️</button>
-    <button class="del-btn" onclick="event.stopPropagation();deleteSop(${s.id})" style="width:24px;height:24px;font-size:12px">🗑️</button>
   </div>`:'';
+
   return `<div class="client-tile" onclick="openModal(${s.id})">
     <div class="client-tile-top">
       <span class="client-icon">${s.icon||'📱'}</span>
@@ -700,11 +782,19 @@ function renderClientTile(s){
 // ─── ADMIN PANEL HTML ─────────────────────────────────────────
 function renderAdminPanel(){
   const allSopsForEdit=[...coreSops,...smClients,[smWiki],...getCustomSops()];
+
   return `<div class="admin-panel">
-    <div class="admin-panel-title">🔧 Admin Panel <button class="btn-secondary" style="margin-left:auto;font-size:11px" onclick="adminMode=false;document.getElementById('admin-btn').classList.remove('active-admin');document.getElementById('admin-btn').textContent='🔧 Admin';render()">Exit Admin</button></div>
+    <div class="admin-panel-title">
+      🔧 Admin Panel
+      <button class="btn-secondary" style="margin-left:auto;font-size:11px"
+        onclick="adminMode=false;document.getElementById('admin-btn').classList.remove('active-admin');document.getElementById('admin-btn').textContent='🔧 Admin';render()">
+        Exit Admin
+      </button>
+    </div>
 
     <div class="admin-section">
       <div class="admin-section-title">🔑 Passcodes</div>
+
       <div class="pass-row">
         <div class="form-group">
           <label class="form-label">App Entry Passcode</label>
@@ -713,6 +803,7 @@ function renderAdminPanel(){
         <button class="btn-primary" onclick="saveAppPass()">Save</button>
         <button class="btn-secondary" onclick="resetAppPass()">Reset</button>
       </div>
+
       <div class="pass-row">
         <div class="form-group">
           <label class="form-label">Admin Passcode</label>
@@ -721,66 +812,12 @@ function renderAdminPanel(){
         <button class="btn-primary" onclick="saveAdminPass()">Save</button>
         <button class="btn-secondary" onclick="resetAdminPass()">Reset</button>
       </div>
+
       <div id="pass-msg" class="success-msg"></div>
     </div>
 
     <div class="admin-section">
-      <div class="admin-section-title">➕ Add New SOP</div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="new-title" placeholder="SOP Title"/></div>
-        <div class="form-group"><label class="form-label">Icon (emoji)</label><input class="form-input" id="new-icon" placeholder="📄" maxlength="4"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Drive URL</label><input class="form-input" id="new-drive" placeholder="https://docs.google.com/..."/></div>
-        <div class="form-group"><label class="form-label">Preview URL</label><input class="form-input" id="new-preview" placeholder="https://docs.google.com/.../preview"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Category</label>
-          <select class="form-select" id="new-category">
-            <option>Operations</option><option>People & HR</option><option>Projects</option>
-            <option>Social Media</option><option>Design & Brand</option><option>Client Management</option>
-          </select>
-        </div>
-        <div class="form-group"><label class="form-label">Status</label>
-          <select class="form-select" id="new-status"><option value="live">Live</option><option value="coming-soon">Coming Soon</option></select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Audience (comma separated)</label><input class="form-input" id="new-audience" placeholder="All team members, Team managers"/></div>
-        <div class="form-group"><label class="form-label">Platforms / Tags</label><input class="form-input" id="new-platforms" placeholder="Facebook, Instagram"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Frequency</label><input class="form-input" id="new-freq" placeholder="3x/week"/></div>
-        <div class="form-group"><label class="form-label">Pages</label><input class="form-input" id="new-pages" type="number" placeholder="1"/></div>
-      </div>
-      <div class="form-row single">
-        <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="new-desc" placeholder="Brief description of this SOP..."></textarea></div>
-      </div>
-      <div class="form-row single">
-        <div class="form-group"><label class="form-label">Sections (one per line)</label><textarea class="form-textarea" id="new-sections" placeholder="Section 1&#10;Section 2&#10;Section 3"></textarea></div>
-      </div>
-      <div class="form-row single">
-        <div class="form-group"><label class="form-label">Topics (comma separated)</label><input class="form-input" id="new-topics" placeholder="Topic 1, Topic 2, Topic 3"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Tab Placement *</label>
-          <select class="form-select" id="new-placement" onchange="toggleTabNameInput()">
-            <option value="core">Core Operations</option>
-            <option value="social-client">Social Media Client Tile</option>
-            <option value="new-tab">New Main Tab</option>
-          </select>
-        </div>
-        <div class="form-group" id="new-tab-name-wrap" style="display:none">
-          <label class="form-label">New Tab Name</label>
-          <input class="form-input" id="new-tab-name" placeholder="e.g. GBP Management"/>
-        </div>
-      </div>
-      <button class="btn-primary" onclick="addNewSop()">➕ Add SOP</button>
-      <div id="add-msg" class="success-msg" style="margin-top:8px"></div>
-    </div>
-
-    <div class="admin-section">
-      <div class="admin-section-title">✏️ Edit / Delete Existing SOPs</div>
+      <div class="admin-section-title">✏️ Edit Existing SOPs</div>
       <div class="sop-edit-list">
         ${allSopsForEdit.map(s=>`
           <div>
@@ -788,26 +825,46 @@ function renderAdminPanel(){
               <span>${s.icon||'📄'}</span>
               <span class="sop-edit-name">${s.title}</span>
               <button class="edit-btn" onclick="toggleEditForm('edit-${s.id}')">✏️ Edit</button>
-              ${getCustomSops().find(c=>c.id===s.id)?`<button class="del-btn" onclick="deleteSop(${s.id})">🗑️</button>`:''}
             </div>
+
             <div class="sop-edit-form" id="edit-${s.id}">
               <div class="form-row">
-                <div class="form-group"><label class="form-label">Title</label><input class="form-input" id="e-title-${s.id}" value="${(s.title||'').replace(/"/g,'&quot;')}"/></div>
-                <div class="form-group"><label class="form-label">Icon</label><input class="form-input" id="e-icon-${s.id}" value="${s.icon||''}" maxlength="4"/></div>
+                <div class="form-group">
+                  <label class="form-label">Title</label>
+                  <input class="form-input" id="e-title-${s.id}" value="${(s.title||'').replace(/"/g,'&quot;')}"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Icon</label>
+                  <input class="form-input" id="e-icon-${s.id}" value="${s.icon||''}" maxlength="4"/>
+                </div>
               </div>
+
               <div class="form-row single">
-                <div class="form-group"><label class="form-label">Google Drive URL</label><input class="form-input" id="e-drive-${s.id}" value="${(s.driveUrl||'').replace(/"/g,'&quot;')}"/></div>
+                <div class="form-group">
+                  <label class="form-label">Google Drive URL</label>
+                  <input class="form-input" id="e-drive-${s.id}" value="${(s.driveUrl||'').replace(/"/g,'&quot;')}"/>
+                </div>
               </div>
+
               <div class="form-row single">
-                <div class="form-group"><label class="form-label">Preview URL</label><input class="form-input" id="e-preview-${s.id}" value="${(s.previewUrl||'').replace(/"/g,'&quot;')}"/></div>
+                <div class="form-group">
+                  <label class="form-label">Preview URL</label>
+                  <input class="form-input" id="e-preview-${s.id}" value="${(s.previewUrl||'').replace(/"/g,'&quot;')}"/>
+                </div>
               </div>
+
               <div class="form-row single">
-                <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="e-desc-${s.id}">${s.desc||''}</textarea></div>
+                <div class="form-group">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-textarea" id="e-desc-${s.id}">${s.desc||''}</textarea>
+                </div>
               </div>
+
               <div style="display:flex;gap:8px;margin-top:8px">
                 <button class="btn-primary" onclick="saveEdit(${s.id})">💾 Save</button>
                 <button class="btn-secondary" onclick="toggleEditForm('edit-${s.id}')">Cancel</button>
               </div>
+
               <div id="edit-msg-${s.id}" class="success-msg" style="margin-top:6px"></div>
             </div>
           </div>
@@ -816,7 +873,6 @@ function renderAdminPanel(){
     </div>
   </div>`;
 }
-
 function toggleTabNameInput(){
   const p=document.getElementById('new-placement');
   document.getElementById('new-tab-name-wrap').style.display=p&&p.value==='new-tab'?'block':'none';
