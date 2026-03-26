@@ -38,7 +38,16 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .login-btn{width:100%;margin-top:12px;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;transition:background .2s}
 .login-btn:hover{background:var(--accent2)}
 .login-error{color:var(--red);font-size:12px;margin-top:8px;min-height:18px}
-
+.brand-logo-image{
+  background:#326FAD url('/wlm-logo.png.jpg') center/cover no-repeat;
+  color:transparent;
+  font-size:0;
+}
+.login-logo-image{
+  background:#326FAD url('/wlm-logo.png.jpg') center/cover no-repeat;
+  color:transparent;
+  font-size:0;
+}
 /* ADMIN AUTH MODAL */
 .admin-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:8000}
 .admin-modal-overlay.open{display:flex}
@@ -259,35 +268,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
     </div>
     <div class="modal-body" id="modal-details-body"></div>
     <div class="modal-body" id="modal-preview-body" style="display:none"></div>
-  </div>
-</div>
-
-<!-- MAIN APP -->
-<div id="app" style="display:none">
-  <div class="wiki-layout">
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="brand">
-<div class="brand-logo brand-logo-image" aria-label="WebLight Media logo"></div>
-          .brand-logo-image{
-  background: #326FAD url('./wlm-logo.png.jpg') center/cover no-repeat;
-  color: transparent;
-  font-size: 0;
-}
-
-.login-logo-image{
-  background: #326FAD url('./wlm-logo.png.jpg') center/cover no-repeat;
-  color: transparent;
-  font-size: 0;
-}
-
+         <div class="brand">
+          <div class="brand-logo brand-logo-image" aria-label="WebLight Media logo"></div>
           <div class="brand-text">
             <div class="brand-title">WebLight Media</div>
             <div class="brand-sub">SOP & Wiki Library</div>
           </div>
         </div>
-      </div>
       <nav class="sidebar-nav" id="sidebar-nav"></nav>
       <div class="sidebar-footer">
         <button class="theme-btn" onclick="toggleTheme()">
