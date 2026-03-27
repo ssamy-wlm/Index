@@ -39,14 +39,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .login-btn:hover{background:var(--accent2)}
 .login-error{color:var(--red);font-size:12px;margin-top:8px;min-height:18px}
 .brand-logo-image{
-  background:#326FAD url('/wlm-logo.png.jpg') center/cover no-repeat;
-  color:transparent;
-  font-size:0;
+  background:#326FAD;
+  overflow:hidden;
+  padding:0;
+}
+.brand-logo-image img{
+  width:100%;height:100%;object-fit:cover;display:block;
 }
 .login-logo-image{
-  background:#326FAD url('/wlm-logo.png.jpg') center/cover no-repeat;
-  color:transparent;
-  font-size:0;
+  background:#326FAD;
+  overflow:hidden;
+  padding:0;
+}
+.login-logo-image img{
+  width:100%;height:100%;object-fit:cover;display:block;
 }
 /* ADMIN AUTH MODAL */
 .admin-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:8000}
@@ -225,7 +231,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 <!-- LOGIN SCREEN -->
 <div class="login-overlay" id="login-screen">
   <div class="login-card">
-    <div class="login-logo login-logo-image" aria-label="WebLight Media logo"></div>
+    <div class="login-logo login-logo-image" aria-label="WebLight Media logo">
+      <img src="https://raw.githubusercontent.com/ssamy-wlm/Index/main/wlm-logo.png.jpg" alt="WebLight Media logo"/>
+    </div>
     <h1>WebLight Media</h1>
     <p>Company Wiki — Internal Access Only</p>
     <input type="password" class="login-input" id="login-pin" placeholder="Enter passcode" maxlength="20"
@@ -251,6 +259,47 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
   </div>
 </div>
 
+<!-- APP LAYOUT (hidden until login) -->
+<div class="wiki-layout" id="app" style="display:none">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <div class="brand-logo brand-logo-image" aria-label="WebLight Media logo">
+          <img src="https://raw.githubusercontent.com/ssamy-wlm/Index/main/wlm-logo.png.jpg" alt="WebLight Media logo"/>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">WebLight Media</div>
+          <div class="brand-sub">SOP & Wiki Library</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sidebar-nav" id="sidebar-nav"></nav>
+    <div class="sidebar-footer">
+      <button class="theme-btn" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-label">Dark Mode</span>
+      </button>
+    </div>
+  </aside>
+  <!-- MAIN -->
+  <div class="main">
+    <header class="main-header">
+      <div class="main-header-left">
+        <div class="header-title" id="header-title">All SOPs</div>
+      </div>
+      <div class="header-actions">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="search-input" placeholder="Search SOPs…" oninput="render()"/>
+        </div>
+        <button class="admin-btn" id="admin-btn" onclick="openAdminModal()">🔧 Admin</button>
+      </div>
+    </header>
+    <div class="main-body" id="main-body"></div>
+  </div>
+</div>
+
 <!-- SOP MODAL -->
 <div class="modal-overlay" id="sop-modal">
   <div class="modal">
@@ -268,37 +317,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
     </div>
     <div class="modal-body" id="modal-details-body"></div>
     <div class="modal-body" id="modal-preview-body" style="display:none"></div>
-         <div class="brand">
-          <div class="brand-logo brand-logo-image" aria-label="WebLight Media logo"></div>
-          <div class="brand-text">
-            <div class="brand-title">WebLight Media</div>
-            <div class="brand-sub">SOP & Wiki Library</div>
-          </div>
-        </div>
-      <nav class="sidebar-nav" id="sidebar-nav"></nav>
-      <div class="sidebar-footer">
-        <button class="theme-btn" onclick="toggleTheme()">
-          <span id="theme-icon">🌙</span>
-          <span id="theme-label">Dark Mode</span>
-        </button>
-      </div>
-    </aside>
-    <!-- MAIN -->
-    <div class="main">
-      <header class="main-header">
-        <div class="main-header-left">
-          <div class="header-title" id="header-title">All SOPs</div>
-        </div>
-        <div class="header-actions">
-          <div class="search-wrap">
-            <span class="search-icon">🔍</span>
-            <input type="text" class="search-input" id="search-input" placeholder="Search SOPs…" oninput="render()"/>
-          </div>
-          <button class="admin-btn" id="admin-btn" onclick="openAdminModal()">🔧 Admin</button>
-        </div>
-      </header>
-      <div class="main-body" id="main-body"></div>
-    </div>
   </div>
 </div>
 
@@ -393,7 +411,21 @@ const coreSops=[
   {id:14,title:'Client Communication',icon:'💬',status:'coming-soon',pages:0,updated:'Coming Soon',category:'Client Management',
    driveUrl:null,previewUrl:null,audience:['All team members','Account managers'],
    desc:'Standards and templates for client-facing communication across all channels.',
-   sections:[],topics:['Client communication','Email templates','Response time','Approval process']}
+   sections:[],topics:['Client communication','Email templates','Response time','Approval process']},
+  {id:32,title:'Review Replies',icon:'⭐',status:'live',pages:1,updated:'March 2026',category:'Social Media',
+   driveUrl:'https://drive.google.com/file/d/1cyvhj2I0pWyQ7s_3XCuzYvEhC6_1_ffE/view?usp=sharing',
+   previewUrl:'https://drive.google.com/file/d/1cyvhj2I0pWyQ7s_3XCuzYvEhC6_1_ffE/preview',
+   audience:['Social media & GBP team','Team managers'],
+   desc:'Weekly SOP for monitoring and responding to Google Business Profile reviews for WebLight Media clients. Positive reviews are answered on behalf of the client; negative reviews are left for the client and escalated when needed.',
+   sections:['Access the service Chrome profile','Access & open each client GBP','View new reviews since the previous Monday','Respond to positive reviews only','Proofing & completion in Asana','Quick reference summary'],
+   topics:['Google Business Profile','Review replies','Weekly Monday task','Positive reviews','Negative review escalation','service@weblightmedia.com','GBP Manager','Asana']},
+  {id:33,title:'Website Hosting & Functionality Check',icon:'🌐',status:'live',pages:1,updated:'March 2026',category:'Social Media',
+   driveUrl:'https://drive.google.com/file/d/1M_hSNWB004v83pt0jnpELksAs_Qc8GrE/view?usp=sharing',
+   previewUrl:'https://drive.google.com/file/d/1M_hSNWB004v83pt0jnpELksAs_Qc8GrE/preview',
+   audience:['Social media team','Team managers'],
+   desc:'Weekly SOP for checking client websites for uptime and front-end functionality issues including broken layouts, missing images, broken buttons, and page errors before clients notice them.',
+   sections:['Set up for the check in Chrome Incognito','Front-end website check','Check homepage layout, images, formatting, and buttons','Spot-check one subpage','Report issues immediately with screenshots','Quick reference — what to check'],
+   topics:['Website hosting check','Website functionality check','Weekly Monday task','Google Chrome Incognito','Broken buttons','Missing images','404 errors','500 errors','Client websites','Screenshot reporting','bbynes@weblightmedia.com','david@weblightmedia.com']}
 ];
 
 const smWiki={id:20,title:'Social Media Clients — Master Wiki',icon:'📚',status:'live',pages:15,updated:'2026',category:'Social Media',
@@ -508,60 +540,6 @@ const smClients=[
    desc:'Monthly maintenance & yearly full audit for all client GBP listings. Agency-wide SOP.',
    sections:['Before every session — open tracker, check Profile Strength','Monthly tasks — services audit, SEO descriptions','Monthly info check — social links, phone, hours','Monthly completion — update tracker','Yearly full audit','Yearly completion','Quick reference table'],
    topics:['GBP management','Profile Strength ring','Services audit','SEO descriptions','Gemini prompts','300-character limit','IWP media library','BigStock','Video verification warning','Client tracker','WLM escalation','Local SEO']}
-,
-  {id:32,order:12,title:'Review Replies',icon:'⭐',status:'live',pages:1,updated:'March 2026',category:'Social Media',
-   driveUrl:'https://drive.google.com/file/d/1cyvhj2I0pWyQ7s_3XCuzYvEhC6_1_ffE/view?usp=sharing',
-   previewUrl:'https://drive.google.com/file/d/1cyvhj2I0pWyQ7s_3XCuzYvEhC6_1_ffE/preview',
-   platforms:['Google Business Profile','Review Management'],frequency:'Weekly — Every Monday morning',
-   audience:['Social media & GBP team','Team managers'],
-   desc:'Weekly SOP for monitoring and responding to Google Business Profile reviews for WebLight Media clients. Positive reviews are answered on behalf of the client; negative reviews are left for the client and escalated when needed.',
-   sections:[
-     'Access the service Chrome profile',
-     'Access & open each client GBP',
-     'View new reviews since the previous Monday',
-     'Respond to positive reviews only',
-     'Proofing & completion in Asana',
-     'Quick reference summary'
-   ],
-   topics:[
-     'Google Business Profile',
-     'Review replies',
-     'Weekly Monday task',
-     'Positive reviews',
-     'Negative review escalation',
-     'service@weblightmedia.com',
-     'GBP Manager',
-     'Asana'
-   ]},
-
-  {id:33,order:13,title:'Website Hosting & Functionality Check',icon:'🌐',status:'live',pages:1,updated:'March 2026',category:'Social Media',
-   driveUrl:'https://drive.google.com/file/d/1M_hSNWB004v83pt0jnpELksAs_Qc8GrE/view?usp=sharing',
-   previewUrl:'https://drive.google.com/file/d/1M_hSNWB004v83pt0jnpELksAs_Qc8GrE/preview',
-   platforms:['Client Websites','QA','Google Chrome'],frequency:'Weekly — Every Monday',
-   audience:['Social media team','Team managers'],
-   desc:'Weekly SOP for checking client websites for uptime and front-end functionality issues including broken layouts, missing images, broken buttons, and page errors before clients notice them.',
-   sections:[
-     'Set up for the check in Chrome Incognito',
-     'Front-end website check',
-     'Check homepage layout, images, formatting, and buttons',
-     'Spot-check one subpage',
-     'Report issues immediately with screenshots',
-     'Quick reference — what to check'
-   ],
-   topics:[
-     'Website hosting check',
-     'Website functionality check',
-     'Weekly Monday task',
-     'Google Chrome Incognito',
-     'Broken buttons',
-     'Missing images',
-     '404 errors',
-     '500 errors',
-     'Client websites',
-     'Screenshot reporting',
-     'bbynes@weblightmedia.com',
-     'david@weblightmedia.com'
-   ]}
 ];
 
 // ─── CUSTOM SOPs FROM LOCALSTORAGE ────────────────────────────
@@ -699,8 +677,16 @@ function render(){
     const gbpSop=smClients.find(s=>s.isGbpSop);
     const nonGbpFiltered=smFiltered.filter(s=>!s.isGbpSop);
 
-    if(wikiMatch||smFiltered.length>0){
-      html+=`<div class="section-header"><div class="section-title">📱 Social Media <span class="section-count">${smClientsAll.length+1}</span></div></div>`;
+    // Agency-wide Social Media SOPs (Review Replies + Website Check) from coreSops
+    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[32,33].includes(s.id)).filter(s=>{
+      if(!ql)return true;
+      return (s.title+s.desc+(s.topics||[]).join(' ')+(s.audience||[]).join(' ')).toLowerCase().includes(ql);
+    });
+
+    const totalSmCount=smClientsAll.length+1+agencySmSops.length; // +1 for smWiki
+
+    if(wikiMatch||smFiltered.length>0||agencySmSops.length>0){
+      html+=`<div class="section-header"><div class="section-title">📱 Social Media <span class="section-count">${totalSmCount}</span></div></div>`;
       if(wikiMatch){
         html+=`<div class="sm-wiki-card" onclick="openModal(20)">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
@@ -722,6 +708,10 @@ function render(){
           </div>
           <div style="font-size:13px;color:var(--text2)">${gbpSop.desc}</div>
         </div>`;
+      }
+      if(agencySmSops.length>0){
+        html+=`<div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;margin-top:4px">Agency SOPs</div>`;
+        html+=`<div class="cards-grid">${agencySmSops.map(s=>renderCard(s)).join('')}</div>`;
       }
       if(nonGbpFiltered.length>0){
         html+=`<div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Individual Client SOPs</div>`;
