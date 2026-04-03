@@ -633,8 +633,9 @@ function render(){
   const showAll=activeFilter==='All';
   const showSM=showAll||activeFilter==='Social Media';
 
-  // Core / category SOPs
+  // Core / category SOPs (ids 32 & 33 are Agency SOPs shown under Social Media only)
   const coreFiltered=[...coreSops,...customSops.filter(s=>s.placement==='core')].filter(s=>{
+    if([32,33].includes(s.id))return false;
     const catMatch=showAll||(s.category===activeFilter);
     if(!catMatch)return false;
     if(!ql)return true;
