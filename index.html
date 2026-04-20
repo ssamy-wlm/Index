@@ -168,6 +168,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .modal-sub{font-size:12px;color:var(--text3);margin-top:2px}
 .modal-close{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text2);flex-shrink:0}
 .modal-close:hover{background:var(--bg);color:var(--red)}
+.fullscreen-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius2);font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;letter-spacing:.2px;box-shadow:0 2px 6px rgba(50,111,173,.25)}
+.fullscreen-btn:hover{background:var(--accent2);box-shadow:0 3px 10px rgba(50,111,173,.35)}
+.fullscreen-btn.disabled{background:var(--bg3);color:var(--text3);border:1px solid var(--border);box-shadow:none;cursor:not-allowed}
+.preview-fullscreen-bar{display:flex;justify-content:flex-end;margin-bottom:12px}
 .modal-tabs{display:flex;padding:0 20px;border-bottom:1px solid var(--border);gap:0}
 .modal-tab{padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--text3);transition:all .15s}
 .modal-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
@@ -179,8 +183,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .sections-list{display:flex;flex-direction:column;gap:4px}
 .section-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg3);border-radius:var(--radius2);font-size:12px}
 .section-num{width:20px;height:20px;border-radius:50%;background:var(--accentbg);color:var(--accent);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.drive-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:var(--blue);color:#fff;border-radius:var(--radius2);font-size:13px;font-weight:600;text-decoration:none;border:none;cursor:pointer}
-.drive-btn:hover{opacity:.9}
 .preview-frame{width:100%;height:500px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3)}
 .preview-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;color:var(--text3);font-size:13px;gap:8px}
 
@@ -309,6 +311,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
         <div class="modal-title" id="m-title"></div>
         <div class="modal-sub" id="m-sub"></div>
       </div>
+      <button class="fullscreen-btn" id="modal-fullscreen-btn" onclick="openFullScreen()">⛶ Open Full Screen</button>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-tabs">
@@ -400,10 +403,6 @@ const coreSops=[
    desc:'Official 2026 company holiday schedule including US and Egypt holidays.',
    sections:['Full calendar','US holidays','Egypt holidays','Policy: choose 10 days','Submission instructions'],
    topics:['Holidays','PTO','Time off','US holidays','Egypt holidays','2026 calendar']},
-  {id:12,title:'Asana Project Management',icon:'📋',status:'coming-soon',pages:0,updated:'Coming Soon',category:'Projects',
-   driveUrl:null,previewUrl:null,audience:['All team members'],
-   desc:'Comprehensive guide to managing projects, tasks and workflows in Asana.',
-   sections:[],topics:['Asana','Project management','Tasks','Workflows']},
   {id:13,title:'Brand Rights & Design Standards',icon:'🎨',status:'coming-soon',pages:0,updated:'Coming Soon',category:'Design & Brand',
    driveUrl:null,previewUrl:null,audience:['Design team','Content team'],
    desc:'Guidelines for brand usage, design standards and intellectual property rights.',
@@ -412,6 +411,13 @@ const coreSops=[
    driveUrl:null,previewUrl:null,audience:['All team members','Account managers'],
    desc:'Standards and templates for client-facing communication across all channels.',
    sections:[],topics:['Client communication','Email templates','Response time','Approval process']},
+  {id:35,title:'Sprout Social',icon:'🌿',status:'live',pages:1,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/12mtwyVOnv4I_2Iu1qFfQX-lU0DuUpHnP/view',
+   previewUrl:'https://docs.google.com/document/d/12mtwyVOnv4I_2Iu1qFfQX-lU0DuUpHnP/preview',
+   audience:['Social media team','Team managers'],
+   desc:'Step-by-step guide to scheduling client posts in Sprout Social — covers uploading media, writing or AI-generating captions, and selecting optimal posting times.',
+   sections:['Open Sprout Social & navigate to Publishing calendar','Click Schedule Post on selected date','Upload media via the + button','Write caption or use AI Assist → Generate from custom topic','Set posting time using Optimal Times — choose 5-star slot','Avoid odd hours — pick 4-star daytime slot if needed'],
+   topics:['Sprout Social','Publishing calendar','Schedule Post','Upload media','Caption writing','AI Assist','Optimal Times','5-star timing','Content scheduling','Social media scheduling']},
   {id:32,title:'Review Replies',icon:'⭐',status:'live',pages:1,updated:'March 2026',category:'Social Media',
    driveUrl:'https://drive.google.com/file/d/1cyvhj2I0pWyQ7s_3XCuzYvEhC6_1_ffE/view?usp=sharing',
    previewUrl:'https://drive.google.com/file/d/1cyvhj2I0pWyQ7s_3XCuzYvEhC6_1_ffE/preview',
@@ -428,9 +434,9 @@ const coreSops=[
    topics:['Website hosting check','Website functionality check','Weekly Monday task','Google Chrome Incognito','Broken buttons','Missing images','404 errors','500 errors','Client websites','Screenshot reporting','bbynes@weblightmedia.com','david@weblightmedia.com']}
 ];
 
-const smWiki={id:20,title:'Social Media Clients — Master Wiki',icon:'📚',status:'live',pages:15,updated:'2026',category:'Social Media',
-  driveUrl:'https://docs.google.com/document/d/1kNeAXdphPjhHWnqeKsUE5v0Lmoo7cZZPXRf1_rseS7Y/edit?usp=sharing',
-  previewUrl:'https://docs.google.com/document/d/1kNeAXdphPjhHWnqeKsUE5v0Lmoo7cZZPXRf1_rseS7Y/preview',
+const smWiki={id:20,title:'Social Media Clients — Master Wiki',icon:'📚',status:'live',pages:15,updated:'April 2026',category:'Social Media',
+  driveUrl:'https://docs.google.com/document/d/1Qz-LU_AlXbWkUzUNFfzJyCGxydT2-WMy/view',
+  previewUrl:'https://docs.google.com/document/d/1Qz-LU_AlXbWkUzUNFfzJyCGxydT2-WMy/preview',
   audience:['Social media team','Team managers'],
   desc:'Master reference for all social media clients — schedules, platforms, gems, and workflows.',
 sections:[
@@ -438,11 +444,11 @@ sections:[
   'Accounting Connections',
   'Baber Law',
   'Glasco HVAC',
+  'Goode Bookkeeping',
   'HSCM/HSPM',
   'MMNT',
   'Shapiro Auctions',
-  'The Learning Center',
-  'Building Blocks',
+  'The Learning Center / Building Blocks',
   'Servpro',
   'GBP Management',
   'Review Replies',
@@ -465,74 +471,83 @@ topics:[
 ]
 };
 const smClients=[
-  {id:21,order:1,title:'Absolute Air Services',icon:'❄️',status:'live',pages:3,updated:'2025',category:'Social Media',
-   driveUrl:'https://docs.google.com/document/d/1cFYfi6-pVtOWa7M7b2penJygDDOjojGRZCZ5jHYBvpA/edit?usp=sharing',
-   previewUrl:'https://docs.google.com/document/d/1cFYfi6-pVtOWa7M7b2penJygDDOjojGRZCZ5jHYBvpA/preview',
+  {id:21,order:2,title:'Absolute Air Services',icon:'❄️',status:'live',pages:3,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1iyQEEt0kcm77ZZTStGAR1DmpRaZtiz9V/view',
+   previewUrl:'https://docs.google.com/document/d/1iyQEEt0kcm77ZZTStGAR1DmpRaZtiz9V/preview',
    platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
    desc:'HVAC company social media SOP covering copywriting, Canva design and Sprout scheduling.',
    sections:['Copywriting prompts','Canva design updates','Sprout Social scheduling'],
    topics:['HVAC','Absolute Air','Facebook','Instagram','Canva','Sprout Social']},
-  {id:22,order:2,title:'Accounting Connections',icon:'📊',status:'live',pages:3,updated:'2025',category:'Social Media',
-   driveUrl:'https://docs.google.com/document/d/12-L69Mf7ILLlaaxxlVHvcw58GLerMg_pV3YasNAUYSE/edit?usp=sharing',
-   previewUrl:'https://docs.google.com/document/d/12-L69Mf7ILLlaaxxlVHvcw58GLerMg_pV3YasNAUYSE/preview',
+  {id:22,order:3,title:'Accounting Connections',icon:'📊',status:'live',pages:3,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1Le9K5RO-yc8kazC6a4KjNCNF_NIO63O7/view',
+   previewUrl:'https://docs.google.com/document/d/1Le9K5RO-yc8kazC6a4KjNCNF_NIO63O7/preview',
    platforms:['Facebook','LinkedIn'],frequency:'3x/week',audience:['Social media team','Team managers'],
    desc:'Accounting firm social media SOP for professional content on Facebook and LinkedIn.',
    sections:['Copywriting prompts','Canva templates','LinkedIn best practices','Sprout scheduling'],
    topics:['Accounting','Finance','Facebook','LinkedIn','Professional content','Canva']},
-  {id:23,order:3,title:'Baber Law',icon:'⚖️',status:'live',pages:3,updated:'2025',category:'Social Media',
-   driveUrl:'https://docs.google.com/document/d/1y0icu6ZYnyiY5SlDALjUpB7BzFJthpq1mHb7mScg2ws/edit?usp=sharing',
-   previewUrl:'https://docs.google.com/document/d/1y0icu6ZYnyiY5SlDALjUpB7BzFJthpq1mHb7mScg2ws/preview',
+  {id:23,order:4,title:'Baber Law',icon:'⚖️',status:'live',pages:3,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1yGYRyoFii6G4bojAhIZzl9gdFbKijvRl/view',
+   previewUrl:'https://docs.google.com/document/d/1yGYRyoFii6G4bojAhIZzl9gdFbKijvRl/preview',
    platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
    desc:'Law firm social media SOP covering legal content, design and scheduling.',
    sections:['Copywriting prompts','Canva templates','Approval process','Sprout scheduling'],
    topics:['Law firm','Legal content','Facebook','Instagram','Canva','Approval']},
-  {id:24,order:4,title:'Glasco HVAC',icon:'🔧',status:'live',pages:3,updated:'2025',category:'Social Media',
-   driveUrl:'https://docs.google.com/document/d/1clYpb6SdTk60_GqWlpksVSiAolSWyPyL24IzOVJYWQI/edit?usp=sharing',
-   previewUrl:'https://docs.google.com/document/d/1clYpb6SdTk60_GqWlpksVSiAolSWyPyL24IzOVJYWQI/preview',
+  {id:24,order:5,title:'Glasco HVAC',icon:'🔧',status:'live',pages:3,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1gfmixdvCavoAy97b0oUDTi0jVHU-Yeao/view',
+   previewUrl:'https://docs.google.com/document/d/1gfmixdvCavoAy97b0oUDTi0jVHU-Yeao/preview',
    platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
    desc:'HVAC contractor social media SOP for content creation and scheduling.',
    sections:['Copywriting prompts','Canva design','Sprout Social scheduling'],
    topics:['HVAC','Glasco','Facebook','Instagram','Canva','Sprout Social']},
-  {id:25,order:5,title:'HSCM / HSPM',icon:'🏥',status:'live',pages:3,updated:'2025',category:'Social Media',
-   driveUrl:'https://docs.google.com/document/d/1r_ewj10TmdZq6950YmNtiFvzGnIyP13Uq9hD141n9QU/edit?usp=sharing',
-   previewUrl:'https://docs.google.com/document/d/1r_ewj10TmdZq6950YmNtiFvzGnIyP13Uq9hD141n9QU/preview',
+  {id:25,order:6,title:'HSCM / HSPM',icon:'🏥',status:'live',pages:3,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1OwVoxIZS-mg5dsUE6aSOmH6VRQYhIUFM/view',
+   previewUrl:'https://docs.google.com/document/d/1OwVoxIZS-mg5dsUE6aSOmH6VRQYhIUFM/preview',
    platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
    desc:'Healthcare social media SOP covering HIPAA-compliant content and scheduling.',
    sections:['Copywriting prompts','HIPAA compliance notes','Canva templates','Sprout scheduling'],
    topics:['Healthcare','HIPAA','Facebook','Instagram','Canva','Compliance']},
-  {id:26,order:6,title:'MMNT',icon:'🎭',status:'live',pages:3,updated:'2025',category:'Social Media',
-   driveUrl:'https://docs.google.com/document/d/1fNaJpPhFXfS8bY2O6CtnbqqevVFWLVLtE7UjKWBscUI/edit?usp=sharing',
-   previewUrl:'https://docs.google.com/document/d/1fNaJpPhFXfS8bY2O6CtnbqqevVFWLVLtE7UjKWBscUI/preview',
+  {id:26,order:7,title:'MMNT',icon:'🎭',status:'live',pages:3,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1ezwbmHf7ql3M8Yhykf-qNbGbJbw3Ldc7/view',
+   previewUrl:'https://docs.google.com/document/d/1ezwbmHf7ql3M8Yhykf-qNbGbJbw3Ldc7/preview',
    platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
    desc:'Entertainment/events social media SOP for engaging content and community management.',
    sections:['Copywriting prompts','Event content','Canva templates','Sprout scheduling'],
    topics:['Entertainment','Events','Facebook','Instagram','Community management','Canva']},
-  {id:27,order:7,title:'Shapiro Auctions',icon:'🏛️',status:'live',pages:3,updated:'2025',category:'Social Media',
+  {id:27,order:8,title:'Shapiro Auctions',icon:'🏛️',status:'live',pages:3,updated:'2025',category:'Social Media',
    driveUrl:'',previewUrl:'',
    platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
    desc:'Auction house social media SOP for showcasing items and driving bidder engagement.',
    sections:['Copywriting prompts','Item photography','Canva templates','Sprout scheduling'],
    topics:['Auctions','Antiques','Facebook','Instagram','Bidding','Canva']},
-  {id:28,order:8,title:'The Learning Center',icon:'📚',status:'live',pages:3,updated:'2025',category:'Social Media',
-   driveUrl:'',previewUrl:'',
+  {id:28,order:9,title:'The Learning Center',icon:'📚',status:'live',pages:3,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1Kh45S5K4Adwg9awIJylxbPF1h7kQJqAs/view',
+   previewUrl:'https://docs.google.com/document/d/1Kh45S5K4Adwg9awIJylxbPF1h7kQJqAs/preview',
    platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
    desc:'Childcare/education social media SOP for The Learning Center.',
    sections:['Copywriting prompts','Brightwheel image sourcing','Canva templates','Sprout scheduling'],
    topics:['Childcare','Education','Facebook','Instagram','Brightwheel','Canva']},
-  {id:29,order:9,title:'Building Blocks',icon:'🧱',status:'live',pages:1,updated:'2025',category:'Social Media',
-   driveUrl:'',previewUrl:'',
+  {id:29,order:10,title:'Building Blocks',icon:'🧱',status:'live',pages:3,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1Kh45S5K4Adwg9awIJylxbPF1h7kQJqAs/view',
+   previewUrl:'https://docs.google.com/document/d/1Kh45S5K4Adwg9awIJylxbPF1h7kQJqAs/preview',
    platforms:['Facebook','LinkedIn'],frequency:'3x/week',audience:['Social media team'],
    desc:'Sister brand to The Learning Center — reuse TLC Canva templates, change all copy to Building Blocks of Windsor.',
    sections:['Reuse TLC Canva templates','Pull images from Brightwheel – TLC Sheryl only','Use Learning Center Gem renamed to Building Blocks','Schedule in Sprout Social'],
    topics:['Childcare','Building Blocks of Windsor','Brightwheel TLC Sheryl','NOT TLC Frank or TLC Thomas','Reuse TLC templates']},
-  {id:30,order:10,title:'Servpro',icon:'📰',status:'live',pages:1,updated:'2026',category:'Social Media',
-   driveUrl:'https://docs.google.com/document/d/1utLthjTfSjsn_XptWSPXSHVJGRonTo5zzfpBho_X5Fs/edit?usp=sharing',
-   previewUrl:'https://docs.google.com/document/d/1utLthjTfSjsn_XptWSPXSHVJGRonTo5zzfpBho_X5Fs/preview',
+  {id:30,order:1,title:'Servpro',icon:'📰',status:'live',pages:1,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1oSTwUKNAwkFkNM0dWsTjjfdIM62Jutg8/view',
+   previewUrl:'https://docs.google.com/document/d/1oSTwUKNAwkFkNM0dWsTjjfdIM62Jutg8/preview',
    platforms:['Press Release','Media Outreach'],frequency:'As needed',audience:['Content team','Team managers'],
    desc:'Press release SOP for Servpro — disaster restoration company. Covers drafting, approval and distribution.',
    sections:['Review template & brand voice','Draft press release','Internal review & approval','Distribution'],
    topics:['Press release','Servpro','Disaster restoration','Media outreach','AP style','Distribution']},
-  {id:31,order:11,title:'Google Business Profile (GBP) Management',icon:'📍',isGbpSop:true,status:'live',pages:1,updated:'2026',category:'Social Media',
+  {id:34,order:11,title:'Goode Bookkeeping',icon:'📒',status:'live',pages:1,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/16irY4mpEkzEeiImo1j3a3iUVlUsf7F2g/view',
+   previewUrl:'https://docs.google.com/document/d/16irY4mpEkzEeiImo1j3a3iUVlUsf7F2g/preview',
+   platforms:['Facebook','Instagram'],frequency:'3x/week',audience:['Social media team','Team managers'],
+   desc:'Social media SOP for Goode Bookkeeping — a small-business bookkeeping & accounting firm in Glastonbury, CT. Covers AI-generated graphics, blog post links, and caption writing via the Copywriter Gem.',
+   sections:['Graphics — AI-generated images via Copywriter Gem','Captions — generate via Gemini prompt','Blog posts — link to recent or unfeatured articles'],
+   topics:['Bookkeeping','QuickBooks','Bill pay','Invoice management','CFO services','Canva','AI graphics','Gemini Copywriter Gem','Blog posts','Glastonbury CT','No merchant services','No payroll posts']},
+  {id:31,order:12,title:'Google Business Profile (GBP) Management',icon:'📍',isGbpSop:true,status:'live',pages:1,updated:'2026',category:'Social Media',
    driveUrl:'https://docs.google.com/document/d/12VbVNCVaT4zNDNd47rpp8velI5MnVYEt/edit?usp=sharing',
    previewUrl:'https://docs.google.com/document/d/12VbVNCVaT4zNDNd47rpp8velI5MnVYEt/preview',
    platforms:['Google Business Profile','Google Maps','Google Search'],frequency:'Monthly + yearly audit',
@@ -633,8 +648,9 @@ function render(){
   const showAll=activeFilter==='All';
   const showSM=showAll||activeFilter==='Social Media';
 
-  // Core / category SOPs
+  // Core / category SOPs (ids 32, 33, 35 are Agency SOPs shown under Social Media only)
   const coreFiltered=[...coreSops,...customSops.filter(s=>s.placement==='core')].filter(s=>{
+    if([32,33,35].includes(s.id))return false;
     const catMatch=showAll||(s.category===activeFilter);
     if(!catMatch)return false;
     if(!ql)return true;
@@ -668,7 +684,7 @@ function render(){
 
   // Social Media section
   if(showSM){
-    const smClientsAll=[...smClients,...customSops.filter(s=>s.placement==='social-client')];
+    const smClientsAll=[...smClients,...customSops.filter(s=>s.placement==='social-client')].sort((a,b)=>(a.order||99)-(b.order||99));
     const smFiltered=smClientsAll.filter(s=>{
       if(!ql)return true;
       return (s.title+s.desc+(s.topics||[]).join(' ')+(s.platforms||[]).join(' ')).toLowerCase().includes(ql);
@@ -677,8 +693,8 @@ function render(){
     const gbpSop=smClients.find(s=>s.isGbpSop);
     const nonGbpFiltered=smFiltered.filter(s=>!s.isGbpSop);
 
-    // Agency-wide Social Media SOPs (Review Replies + Website Check) from coreSops
-    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[32,33].includes(s.id)).filter(s=>{
+    // Agency-wide Social Media SOPs (Sprout Social + Review Replies + Website Check) from coreSops
+    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[35,32,33].includes(s.id)).sort((a,b)=>[35,32,33].indexOf(a.id)-[35,32,33].indexOf(b.id)).filter(s=>{
       if(!ql)return true;
       return (s.title+s.desc+(s.topics||[]).join(' ')+(s.audience||[]).join(' ')).toLowerCase().includes(ql);
     });
@@ -1003,14 +1019,28 @@ function openModal(id){
     <div class="modal-tags">${s.platforms.map(p=>`<span class="modal-tag">📱 ${p}</span>`).join('')}</div></div>`;
   if(s.frequency)details+=`<div class="modal-section"><div class="modal-section-title">Posting Frequency</div>
     <span class="modal-tag">🗓 ${s.frequency}</span></div>`;
-  if(s.driveUrl)details+=`<div class="modal-section"><a href="${s.driveUrl}" target="_blank" class="drive-btn">📂 Open in Google Drive</a></div>`;
-
   document.getElementById('modal-details-body').innerHTML=details||'<p style="color:var(--text3);font-size:13px">No details available yet.</p>';
+
+  // Full screen header button
+  const fsBtn=document.getElementById('modal-fullscreen-btn');
+  if(s.previewUrl){
+    fsBtn.classList.remove('disabled');
+    fsBtn.onclick=()=>window.open(s.previewUrl,'_blank');
+  } else {
+    fsBtn.classList.add('disabled');
+    fsBtn.onclick=null;
+  }
 
   // Preview tab
   let preview='';
-  if(s.previewUrl)preview=`<iframe class="preview-frame" src="${s.previewUrl}" frameborder="0" allowfullscreen></iframe>`;
-  else preview=`<div class="preview-placeholder"><span style="font-size:36px">📄</span><span>No preview available</span><span style="font-size:12px">Add a Google Drive URL to enable live preview</span></div>`;
+  if(s.previewUrl){
+    preview=`<div class="preview-fullscreen-bar">
+      <button class="fullscreen-btn" onclick="window.open('${s.previewUrl}','_blank')">⛶ Open Full Screen</button>
+    </div>
+    <iframe class="preview-frame" src="${s.previewUrl}" frameborder="0" allowfullscreen></iframe>`;
+  } else {
+    preview=`<div class="preview-placeholder"><span style="font-size:36px">📄</span><span>No preview available yet</span></div>`;
+  }
   document.getElementById('modal-preview-body').innerHTML=preview;
 
   switchTab('details');
