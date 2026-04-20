@@ -168,6 +168,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .modal-sub{font-size:12px;color:var(--text3);margin-top:2px}
 .modal-close{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text2);flex-shrink:0}
 .modal-close:hover{background:var(--bg);color:var(--red)}
+.fullscreen-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius2);font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;letter-spacing:.2px;box-shadow:0 2px 6px rgba(50,111,173,.25)}
+.fullscreen-btn:hover{background:var(--accent2);box-shadow:0 3px 10px rgba(50,111,173,.35)}
+.fullscreen-btn.disabled{background:var(--bg3);color:var(--text3);border:1px solid var(--border);box-shadow:none;cursor:not-allowed}
+.preview-fullscreen-bar{display:flex;justify-content:flex-end;margin-bottom:12px}
 .modal-tabs{display:flex;padding:0 20px;border-bottom:1px solid var(--border);gap:0}
 .modal-tab{padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--text3);transition:all .15s}
 .modal-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
@@ -179,8 +183,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .sections-list{display:flex;flex-direction:column;gap:4px}
 .section-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg3);border-radius:var(--radius2);font-size:12px}
 .section-num{width:20px;height:20px;border-radius:50%;background:var(--accentbg);color:var(--accent);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.drive-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:var(--blue);color:#fff;border-radius:var(--radius2);font-size:13px;font-weight:600;text-decoration:none;border:none;cursor:pointer}
-.drive-btn:hover{opacity:.9}
 .preview-frame{width:100%;height:500px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3)}
 .preview-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;color:var(--text3);font-size:13px;gap:8px}
 
@@ -309,6 +311,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
         <div class="modal-title" id="m-title"></div>
         <div class="modal-sub" id="m-sub"></div>
       </div>
+      <button class="fullscreen-btn" id="modal-fullscreen-btn" onclick="openFullScreen()">⛶ Open Full Screen</button>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-tabs">
@@ -1004,14 +1007,28 @@ function openModal(id){
     <div class="modal-tags">${s.platforms.map(p=>`<span class="modal-tag">📱 ${p}</span>`).join('')}</div></div>`;
   if(s.frequency)details+=`<div class="modal-section"><div class="modal-section-title">Posting Frequency</div>
     <span class="modal-tag">🗓 ${s.frequency}</span></div>`;
-  if(s.driveUrl)details+=`<div class="modal-section"><a href="${s.driveUrl}" target="_blank" class="drive-btn">📂 Open in Google Drive</a></div>`;
-
   document.getElementById('modal-details-body').innerHTML=details||'<p style="color:var(--text3);font-size:13px">No details available yet.</p>';
+
+  // Full screen header button
+  const fsBtn=document.getElementById('modal-fullscreen-btn');
+  if(s.previewUrl){
+    fsBtn.classList.remove('disabled');
+    fsBtn.onclick=()=>window.open(s.previewUrl,'_blank');
+  } else {
+    fsBtn.classList.add('disabled');
+    fsBtn.onclick=null;
+  }
 
   // Preview tab
   let preview='';
-  if(s.previewUrl)preview=`<iframe class="preview-frame" src="${s.previewUrl}" frameborder="0" allowfullscreen></iframe>`;
-  else preview=`<div class="preview-placeholder"><span style="font-size:36px">📄</span><span>No preview available</span><span style="font-size:12px">Add a Google Drive URL to enable live preview</span></div>`;
+  if(s.previewUrl){
+    preview=`<div class="preview-fullscreen-bar">
+      <button class="fullscreen-btn" onclick="window.open('${s.previewUrl}','_blank')">⛶ Open Full Screen</button>
+    </div>
+    <iframe class="preview-frame" src="${s.previewUrl}" frameborder="0" allowfullscreen></iframe>`;
+  } else {
+    preview=`<div class="preview-placeholder"><span style="font-size:36px">📄</span><span>No preview available yet</span></div>`;
+  }
   document.getElementById('modal-preview-body').innerHTML=preview;
 
   switchTab('details');
