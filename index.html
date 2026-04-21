@@ -382,7 +382,7 @@ const coreSops=[
    desc:'Definitive reference for WebLight Media — covers company history, services, ideal clients, team structure, tools, pricing, and growth priorities. Start here.',
    sections:['Who We Are','Services We Offer','Our Ideal Clients — Who We Sell To','Our Team & Key Contractors','Core Tools & Technology','How We Price & Package','Where We Are Going — Growth Priorities'],
    topics:['WebLight Media','David Joslin','Connecticut','Digital marketing','Website design','SEO','Google Ads','Social media','Video production','Ideal clients','Team structure','Canva','Sprout Social','Gemini Gems','HeyGen','Google Workspace','Recurring revenue','White-glove service']},
-  {id:38,title:'Client Reporting & Analytics',icon:'📈',status:'live',pages:6,updated:'April 2026',category:'Operations',
+  {id:38,title:'Client Reporting & Analytics',icon:'📈',status:'live',pages:6,updated:'April 2026',category:'Social Media',
    driveUrl:'https://docs.google.com/document/d/15QfNNjpsPZZbrgBQI2QN4NCvwkFk3C7J/view',
    previewUrl:'https://docs.google.com/document/d/15QfNNjpsPZZbrgBQI2QN4NCvwkFk3C7J/preview',
    audience:['Account managers','Team managers','All team members'],
@@ -687,9 +687,9 @@ function render(){
   const showAll=activeFilter==='All';
   const showSM=showAll||activeFilter==='Social Media';
 
-  // Core / category SOPs (ids 32,33,35,39 are Agency SOPs shown under Social Media only)
+  // Core / category SOPs (ids 32,33,35,38,39 are Agency SOPs shown under Social Media only)
   const coreFiltered=[...coreSops,...customSops.filter(s=>s.placement==='core')].filter(s=>{
-    if([32,33,35,39].includes(s.id))return false;
+    if([32,33,35,38,39].includes(s.id))return false;
     const catMatch=showAll||(s.category===activeFilter);
     if(!catMatch)return false;
     if(!ql)return true;
@@ -733,7 +733,7 @@ function render(){
     const nonGbpFiltered=smFiltered.filter(s=>!s.isGbpSop);
 
     // Agency-wide Social Media SOPs (Sprout Social + Review Replies + Website Check) from coreSops
-    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[35,32,33,39].includes(s.id)).sort((a,b)=>[35,32,33,39].indexOf(a.id)-[35,32,33,39].indexOf(b.id)).filter(s=>{
+    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[35,32,33,39,38].includes(s.id)).sort((a,b)=>[35,32,33,39,38].indexOf(a.id)-[35,32,33,39,38].indexOf(b.id)).filter(s=>{
       if(!ql)return true;
       return (s.title+s.desc+(s.topics||[]).join(' ')+(s.audience||[]).join(' ')).toLowerCase().includes(ql);
     });
