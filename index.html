@@ -172,6 +172,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .fullscreen-btn:hover{background:var(--accent2);box-shadow:0 3px 10px rgba(50,111,173,.35)}
 .fullscreen-btn.disabled{background:var(--bg3);color:var(--text3);border:1px solid var(--border);box-shadow:none;cursor:not-allowed}
 .preview-fullscreen-bar{display:flex;justify-content:flex-end;margin-bottom:12px}
+.fs-overlay{position:fixed;inset:0;background:var(--bg);z-index:9000;display:none;flex-direction:column}
+.fs-overlay.open{display:flex}
+.fs-bar{height:48px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
+.fs-title{font-size:14px;font-weight:700;color:var(--text)}
+.fs-close{padding:7px 14px;background:var(--redbg);color:var(--red);border:1px solid var(--red);border-radius:var(--radius2);font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.fs-close:hover{background:var(--red);color:#fff}
+.fs-frame{flex:1;width:100%;border:none}
 .modal-tabs{display:flex;padding:0 20px;border-bottom:1px solid var(--border);gap:0}
 .modal-tab{padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--text3);transition:all .15s}
 .modal-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
@@ -300,6 +307,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
     </header>
     <div class="main-body" id="main-body"></div>
   </div>
+</div>
+
+<!-- FULLSCREEN PREVIEW OVERLAY -->
+<div class="fs-overlay" id="fs-overlay">
+  <div class="fs-bar">
+    <span class="fs-title" id="fs-title"></span>
+    <button class="fs-close" onclick="closeFullScreen()">✕ Close</button>
+  </div>
+  <iframe class="fs-frame" id="fs-frame" frameborder="0" allowfullscreen></iframe>
 </div>
 
 <!-- SOP MODAL -->
@@ -1064,7 +1080,7 @@ function openModal(id){
   const fsBtn=document.getElementById('modal-fullscreen-btn');
   if(s.previewUrl){
     fsBtn.classList.remove('disabled');
-    fsBtn.onclick=()=>window.open(s.previewUrl,'_blank');
+    fsBtn.onclick=()=>openFullScreen(s.title,s.previewUrl);
   } else {
     fsBtn.classList.add('disabled');
     fsBtn.onclick=null;
@@ -1074,7 +1090,7 @@ function openModal(id){
   let preview='';
   if(s.previewUrl){
     preview=`<div class="preview-fullscreen-bar">
-      <button class="fullscreen-btn" onclick="window.open('${s.previewUrl}','_blank')">⛶ Open Full Screen</button>
+      <button class="fullscreen-btn" onclick="openFullScreen('${s.title.replace(/'/g,"\\'")}','${s.previewUrl}')">⛶ Open Full Screen</button>
     </div>
     <iframe class="preview-frame" src="${s.previewUrl}" frameborder="0" allowfullscreen></iframe>`;
   } else {
@@ -1089,6 +1105,15 @@ function closeModal(){
   document.getElementById('sop-modal').classList.remove('open');
   document.getElementById('modal-preview-body').innerHTML='';
 }
+function openFullScreen(title,url){
+  document.getElementById('fs-title').textContent=title||'';
+  document.getElementById('fs-frame').src=url;
+  document.getElementById('fs-overlay').classList.add('open');
+}
+function closeFullScreen(){
+  document.getElementById('fs-overlay').classList.remove('open');
+  document.getElementById('fs-frame').src='';
+}
 function switchTab(tab){
   document.getElementById('tab-details').classList.toggle('active',tab==='details');
   document.getElementById('tab-preview').classList.toggle('active',tab==='preview');
@@ -1099,7 +1124,7 @@ function switchTab(tab){
 // Close modal on overlay click
 document.getElementById('sop-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 document.addEventListener('keydown',function(e){
-  if(e.key==='Escape'){closeModal();closeAdminModal();}
+  if(e.key==='Escape'){closeFullScreen();closeModal();closeAdminModal();}
   if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();document.getElementById('search-input')&&document.getElementById('search-input').focus();}
 });
 
