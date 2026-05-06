@@ -444,6 +444,13 @@ const coreSops=[
    desc:'Full project workflow for new client website builds — from initial contact and scoping through deposit, content writing, design comps, development, launch, and final payment. Source: David Joslin.',
    sections:['Phase 1 — Initial Contact & Scoping','Phase 2 — Deposit & Kickoff','Phase 3 — Content Writing','Phase 4 — Design & Comps','Phase 5 — Build & Development','Phase 6 — Launch & Final Payment'],
    topics:['Website design','Scoping','Proposal','Deposit non-negotiable','Kickoff call','500 words per page','Design comps','Mobile responsive','Yoast SEO','Written sign-off','Launch','Final invoice','Scope creep','Out-of-scope email','Two revision rounds','Client assets','Brand assets','Sitemap']},
+  {id:42,title:'Grade.us — Review Requests',icon:'⭐',status:'live',pages:1,updated:'April 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1vXdhPxqSasT-nChI5hpYY4nQ6Vbk98pfbefZtBf4L78/view',
+   previewUrl:'https://docs.google.com/document/d/1vXdhPxqSasT-nChI5hpYY4nQ6Vbk98pfbefZtBf4L78/preview',
+   audience:['Social media & GBP team','Team managers'],
+   desc:'Process for setting up a new Grade.us review profile for a WebLight Media client — covers profile creation, review site connections, branding, email request sequences, and scheduled reporting.',
+   sections:['Sign in & create a new client profile','Complete funnel steps — connect business & select review sites','Branding, links & content settings (logo, colour, social links, workflows)','Branding & design — set custom domain to weblightreviews.com','Configure email request settings — Initial (now), Follow-up (3 days), Final (7 days)','Configure scheduled reports & send test email','Completion checklist'],
+   topics:['Grade.us','Review requests','Google Business Profile','Facebook','BBB','weblightreviews.com','Email sequences','Scheduled reports','Review funnel','Client logo','Brand colour','Landing page','Public review workflow','Private feedback workflow','Threshold: All to review']},
   {id:35,title:'Sprout Social',icon:'🌿',status:'live',pages:1,updated:'April 2026',category:'Social Media',
    driveUrl:'https://docs.google.com/document/d/12mtwyVOnv4I_2Iu1qFfQX-lU0DuUpHnP/view',
    previewUrl:'https://docs.google.com/document/d/12mtwyVOnv4I_2Iu1qFfQX-lU0DuUpHnP/preview',
@@ -703,9 +710,9 @@ function render(){
   const showAll=activeFilter==='All';
   const showSM=showAll||activeFilter==='Social Media';
 
-  // Core / category SOPs (ids 32,33,35,38,39 are Agency SOPs shown under Social Media only)
+  // Core / category SOPs (ids 32,33,35,38,39,42 are Agency SOPs shown under Social Media only)
   const coreFiltered=[...coreSops,...customSops.filter(s=>s.placement==='core')].filter(s=>{
-    if([32,33,35,38,39].includes(s.id))return false;
+    if([32,33,35,38,39,42].includes(s.id))return false;
     const catMatch=showAll||(s.category===activeFilter);
     if(!catMatch)return false;
     if(!ql)return true;
@@ -749,7 +756,7 @@ function render(){
     const nonGbpFiltered=smFiltered.filter(s=>!s.isGbpSop);
 
     // Agency-wide Social Media SOPs (Sprout Social + Review Replies + Website Check) from coreSops
-    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[35,32,33,39,38].includes(s.id)).sort((a,b)=>[35,32,33,39,38].indexOf(a.id)-[35,32,33,39,38].indexOf(b.id)).filter(s=>{
+    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[35,32,33,39,38,42].includes(s.id)).sort((a,b)=>[35,32,33,39,38,42].indexOf(a.id)-[35,32,33,39,38,42].indexOf(b.id)).filter(s=>{
       if(!ql)return true;
       return (s.title+s.desc+(s.topics||[]).join(' ')+(s.audience||[]).join(' ')).toLowerCase().includes(ql);
     });
