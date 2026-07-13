@@ -12,15 +12,15 @@
   --bg:#f8f9fa; --bg2:#ffffff; --bg3:#f0f2f5; --border:#e2e8f0; --text:#1a202c; --text2:#4a5568; --text3:#718096;
  --accent:#f5b301; --accent2:#d89e00; --accentbg:#fdf1d6; --on-accent:#152444; --live:#2ecc71; --livebg:#e8faf1;
   --soon:#f59e0b; --soonbg:#fef3c7; --red:#e53e3e; --redbg:#fff5f5;
-  --blue:#1A73E8; --bluebg:#e8f0fe; --orange:#f97316; --orangebg:#fff7ed;
+  --blue:#1A73E8; --bluebg:#e8f0fe;
   --navy:#152444; --navy2:#1c3157; --sidebar-hairline:#26375c; --nav-text:#c7d0e6; --section-muted:#7c8bb0;
   --sidebar:240px; --header:60px;
   --sh1:0 1px 3px rgba(0,0,0,.08); --sh2:0 4px 12px rgba(0,0,0,.1); --sh3:0 8px 24px rgba(0,0,0,.12);
-  --radius:10px; --radius2:6px;
+  --radius:12px; --radius2:6px;
 }
 [data-theme="dark"] {
   --bg:#0f1117; --bg2:#1a1d27; --bg3:#242736; --border:#2d3148; --text:#e2e8f0; --text2:#a0aec0; --text3:#718096;
-  --accentbg:#332a10; --livebg:#1a2e22; --soonbg:#2e2a1a; --redbg:#2e1a1a; --bluebg:#1a2340; --orangebg:#2e2010;
+  --accentbg:#332a10; --livebg:#1a2e22; --soonbg:#2e2a1a; --redbg:#2e1a1a; --bluebg:#1a2340;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:14px}
@@ -96,7 +96,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 /* CONTENT */
 .main-body{padding:20px;flex:1}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.stat-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px}
 .stat-val{font-size:22px;font-weight:700;color:var(--accent)}
 .stat-label{font-size:12px;color:var(--text3);margin-top:2px}
 .filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
@@ -115,7 +115,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 
 /* CARDS GRID */
 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:24px}
-.sop-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .2s;position:relative}
+.sop-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .2s;position:relative}
 .sop-card:hover{transform:translateY(-2px);box-shadow:var(--sh2);border-color:var(--accent)}
 .sop-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
 .icon-chip{display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--accentbg);color:var(--accent)}
@@ -125,7 +125,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .badge{padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600}
 .badge-live{background:var(--livebg);color:var(--live)}
 .badge-soon{background:var(--soonbg);color:var(--soon)}
-.sop-title{font-size:14px;font-weight:700;margin-bottom:4px;line-height:1.3}
+.sop-title{font-size:14px;font-weight:500;margin-bottom:4px;line-height:1.3}
 .sop-desc{font-size:12px;color:var(--text3);margin-bottom:10px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .sop-meta{display:flex;flex-wrap:wrap;gap:4px}
 .tag{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);font-size:10px;color:var(--text3)}
@@ -139,18 +139,18 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .del-btn{background:var(--redbg);color:var(--red)}
 
 /* SM WIKI CARD */
-.sm-wiki-card{background:linear-gradient(135deg,var(--orangebg),var(--bg2));border:2px solid var(--orange);border-radius:var(--radius);padding:18px;cursor:pointer;transition:all .2s;margin-bottom:14px}
+.sm-wiki-card{background:linear-gradient(135deg,var(--navy),var(--navy2));border:1px solid var(--sidebar-hairline);border-radius:var(--radius);padding:18px;cursor:pointer;transition:all .2s;margin-bottom:14px;color:var(--nav-text)}
 .sm-wiki-card:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
-.gbp-card-featured{background:linear-gradient(135deg,var(--bluebg),var(--bg2));border:2px solid var(--blue);border-radius:var(--radius);padding:18px;cursor:pointer;transition:all .2s;margin-bottom:14px}
+.gbp-card-featured{background:linear-gradient(135deg,var(--navy),var(--navy2));border:2px solid var(--accent);border-radius:var(--radius);padding:18px;cursor:pointer;transition:all .2s;margin-bottom:14px;color:var(--nav-text)}
 .gbp-card-featured:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
 
 /* CLIENT TILES */
 .client-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:24px}
-.client-tile{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .2s}
+.client-tile{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .2s}
 .client-tile:hover{transform:translateY(-2px);box-shadow:var(--sh2);border-color:var(--accent)}
 .client-tile-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .client-icon.icon-chip{width:26px;height:26px;border-radius:6px}
-.client-title{font-weight:700;font-size:13px}
+.client-title{font-weight:500;font-size:13px}
 .client-platforms{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
 .client-freq{font-size:11px;color:var(--text3)}
 
@@ -857,22 +857,22 @@ function render(){
         html+=`<div class="sm-wiki-card" onclick="openModal(20)">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
             <span class="icon-chip" style="width:34px;height:34px;border-radius:8px">${svgIcon(smWiki.icon,20)}</span>
-            <div><div style="font-weight:700;font-size:15px">${smWiki.title}</div>
-            <div style="font-size:12px;color:var(--text3)">${smWiki.pages} pages · Updated ${smWiki.updated}</div></div>
+            <div><div style="font-weight:500;font-size:15px;color:#fff">${smWiki.title}</div>
+            <div style="font-size:12px;color:var(--nav-text)">${smWiki.pages} pages · Updated ${smWiki.updated}</div></div>
             <span class="badge badge-live" style="margin-left:auto">LIVE</span>
           </div>
-          <div style="font-size:13px;color:var(--text2)">${smWiki.desc}</div>
+          <div style="font-size:13px;color:var(--nav-text)">${smWiki.desc}</div>
         </div>`;
       }
       if(gbpSop&&(!ql||(gbpSop.title+gbpSop.desc+(gbpSop.topics||[]).join(' ')).toLowerCase().includes(ql))){
         html+=`<div class="gbp-card-featured" onclick="openModal(${gbpSop.id})">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
             <span class="icon-chip" style="width:34px;height:34px;border-radius:8px">${svgIcon(gbpSop.icon,20)}</span>
-            <div><div style="font-weight:700;font-size:15px">${gbpSop.title}</div>
-            <div style="font-size:12px;color:var(--text3)">${(gbpSop.platforms||[]).join(' · ')} · ${gbpSop.frequency}</div></div>
-            <span class="badge" style="background:var(--bluebg);color:var(--blue);margin-left:auto">GBP SOP</span>
+            <div><div style="font-weight:500;font-size:15px;color:#fff">${gbpSop.title}</div>
+            <div style="font-size:12px;color:var(--nav-text)">${(gbpSop.platforms||[]).join(' · ')} · ${gbpSop.frequency}</div></div>
+            <span class="badge" style="background:rgba(245,179,1,.18);color:var(--accent);margin-left:auto">GBP SOP</span>
           </div>
-          <div style="font-size:13px;color:var(--text2)">${gbpSop.desc}</div>
+          <div style="font-size:13px;color:var(--nav-text)">${gbpSop.desc}</div>
         </div>`;
       }
       if(agencySmSops.length>0){
