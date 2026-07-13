@@ -10,7 +10,7 @@
 <style>
 :root {
   --bg:#f8f9fa; --bg2:#ffffff; --bg3:#f0f2f5; --border:#e2e8f0; --text:#1a202c; --text2:#4a5568; --text3:#718096;
- --accent:#f5b301; --accent2:#d89e00; --accentbg:#fdf1d6; --on-accent:#152444; --live:#2ecc71; --livebg:#e8faf1;
+ --accent:#f5b301; --accent2:#d89e00; --accentbg:#fdf1d6; --on-accent:#152444; --live:#2ecc71;
   --soon:#f59e0b; --soonbg:#fef3c7; --red:#e53e3e; --redbg:#fff5f5;
   --blue:#1A73E8; --bluebg:#e8f0fe;
   --navy:#152444; --navy2:#1c3157; --sidebar-hairline:#26375c; --nav-text:#c7d0e6; --section-muted:#7c8bb0;
@@ -20,7 +20,7 @@
 }
 [data-theme="dark"] {
   --bg:#0f1117; --bg2:#1a1d27; --bg3:#242736; --border:#2d3148; --text:#e2e8f0; --text2:#a0aec0; --text3:#718096;
-  --accentbg:#332a10; --livebg:#1a2e22; --soonbg:#2e2a1a; --redbg:#2e1a1a; --bluebg:#1a2340;
+  --accentbg:#332a10; --soonbg:#2e2a1a; --redbg:#2e1a1a; --bluebg:#1a2340;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:14px}
@@ -123,7 +123,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .sop-icon.icon-chip{width:34px;height:34px;border-radius:8px}
 .sop-badges{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 .badge{padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600}
-.badge-live{background:var(--livebg);color:var(--live)}
 .badge-soon{background:var(--soonbg);color:var(--soon)}
 .sop-title{font-size:14px;font-weight:500;margin-bottom:4px;line-height:1.3}
 .sop-desc{font-size:12px;color:var(--text3);margin-bottom:10px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -497,13 +496,6 @@ const coreSops=[
    desc:'Daily operations guide covering team workflows, communication standards, and office procedures.',
    sections:['Morning check-in','Task management','Communication channels','File management','EOD wrap-up','Weekly reviews','Emergency contacts'],
    topics:['Daily workflow','Communication','Slack','Google Drive','Task management','Team meetings']},
-  {id:3,title:'Employee Onboarding',icon:'userplus',status:'live',pages:8,updated:'April 2026',category:'People & HR',
-   driveUrl:'https://docs.google.com/document/d/1GLe_xdlqTWpQejL0635-zX4TLWemg3_K/view',
-   previewUrl:'https://docs.google.com/document/d/1GLe_xdlqTWpQejL0635-zX4TLWemg3_K/preview',
-   audience:['New hires','Team managers'],
-   desc:'Complete onboarding guide for new team members covering tools, processes and culture.',
-   sections:['Before you arrive — manager prep','Day 1: Welcome & setup','Day 2–3: Tools training','Day 4–5: Client intro','Week 2: Deep dive','30-60-90 day roadmap'],
-   topics:['Onboarding','New hire','Day-1 plan','Tools setup','Response times','Culture','Policies']},
   {id:4,title:'Time Off Policy',icon:'calendar',status:'live',pages:3,updated:'April 2026',category:'People & HR',
    driveUrl:'https://docs.google.com/document/d/1k8ykgqMsaAvIlR1PwJmx7GIdwUuYAoKM/view',
    previewUrl:'https://docs.google.com/document/d/1k8ykgqMsaAvIlR1PwJmx7GIdwUuYAoKM/preview',
@@ -859,7 +851,6 @@ function render(){
             <span class="icon-chip" style="width:34px;height:34px;border-radius:8px">${svgIcon(smWiki.icon,20)}</span>
             <div><div style="font-weight:500;font-size:15px;color:#fff">${smWiki.title}</div>
             <div style="font-size:12px;color:var(--nav-text)">${smWiki.pages} pages · Updated ${smWiki.updated}</div></div>
-            <span class="badge badge-live" style="margin-left:auto">LIVE</span>
           </div>
           <div style="font-size:13px;color:var(--nav-text)">${smWiki.desc}</div>
         </div>`;
@@ -905,7 +896,7 @@ function renderCard(s){
     <div class="sop-card-top">
       <span class="sop-icon icon-chip">${svgIcon(s.icon||'file',18)}</span>
       <div class="sop-badges">
-        <span class="badge ${s.status==='live'?'badge-live':'badge-soon'}">${s.status==='live'?'LIVE':'SOON'}</span>
+        ${s.status==='coming-soon'?`<span class="badge badge-soon">SOON</span>`:''}
         ${s.pages?`<span class="badge" style="background:var(--bg3);color:var(--text3)">${s.pages}p</span>`:''}
       </div>
     </div>
