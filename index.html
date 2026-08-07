@@ -544,7 +544,14 @@ const coreSops=[
    audience:['Social media team','Account managers','Team managers'],
    desc:'Step-by-step guide for building local citations in BrightLocal — covers signing in, selecting data aggregators, manual submission to citation sites, paying with credits, verifying business info, and setting up campaign email alerts.',
    sections:['Sign in & search for the business location','Data Aggregators — select Data Axle, Neustar & GPS Network only','Manual Submissions — Add to Basket (typically 15 citations)','Deselect sites with phone/person verification icons; prioritize Very High & High value','Pay with Credits; alert Dave when balance is low','Verify business info matches website, GBP & socials','Campaign Notes — describe all changes made','Email alerts — david@weblightmedia.com + team member email'],
-   topics:['BrightLocal','Citation Builder','Local SEO','Citations','Data Aggregators','Data Axle','Neustar','GPS Network','YP Network','Foursquare','Manual Submissions','Add to Basket','Citation value','Very High','High','Phone verification','Person verification','Credits','Campaign Notes','Email alerts','NAP consistency','david@weblightmedia.com','Google Business Profile','Local listings']}
+   topics:['BrightLocal','Citation Builder','Local SEO','Citations','Data Aggregators','Data Axle','Neustar','GPS Network','YP Network','Foursquare','Manual Submissions','Add to Basket','Citation value','Very High','High','Phone verification','Person verification','Credits','Campaign Notes','Email alerts','NAP consistency','david@weblightmedia.com','Google Business Profile','Local listings']},
+  {id:45,title:'Video Production — Delivery SOP',icon:'video',status:'live',pages:4,updated:'July 2026',category:'Social Media',
+   driveUrl:'https://docs.google.com/document/d/1OxP_nq7r8oVAOA0xCHB41fI2qMbz5PM9CiYmZVyySEc/view',
+   previewUrl:'https://docs.google.com/document/d/1OxP_nq7r8oVAOA0xCHB41fI2qMbz5PM9CiYmZVyySEc/preview',
+   audience:['Video editors','Producers','Team managers'],
+   desc:'Defines how video files are named, organised, and delivered within the WebLight Media Google Drive — covers working folder usage during production, delivery folder placement upon approval, and naming conventions.',
+   sections:['01 — Google Drive structure: WLM root drive, working folders (comps & drafts, internal only), delivery folders (approved files only, client has access)','02 — File naming conventions: format [Client Code] [Month] [Description] [Type].[ext] — e.g. HSCM June video short.mp4; always match existing convention in delivery folder first','03 — Full delivery workflow: edit & save to working folder → send working folder link to team → revise until approved → rename to final convention → move to delivery folder → confirm with Team Manager','04 — Quick reference: working vs delivery folder rules, naming format, when to move files, what to do if folder is missing or naming is unclear'],
+   topics:['Video production','Video delivery','Google Drive','Working folder','Delivery folder','File naming','Naming convention','Client code','Approved files','Comps','Drafts','Revisions','HSCM','MMNT','TLC','mp4','mov','Shorts','Reels','Long form','Team Manager','Never share working folder with client','Move only approved files to delivery']}
 ];
 
 const smWiki={id:20,title:'Social Media Clients — Master Wiki',icon:'bookopen',status:'live',pages:15,updated:'April 2026',category:'Social Media',
@@ -792,7 +799,7 @@ function render(){
 
   // Core / category SOPs (ids 32,33,35,38,39,42 are Agency SOPs shown under Social Media only)
   const coreFiltered=[...coreSops,...customSops.filter(s=>s.placement==='core')].filter(s=>{
-    if([32,33,35,38,39,42,44].includes(s.id))return false;
+    if([32,33,35,38,39,42,44,45].includes(s.id))return false;
     const catMatch=showAll||(s.category===activeFilter);
     if(!catMatch)return false;
     if(!ql)return true;
@@ -836,7 +843,7 @@ function render(){
     const nonGbpFiltered=smFiltered.filter(s=>!s.isGbpSop);
 
     // Agency-wide Social Media SOPs (Sprout Social + Review Replies + Website Check) from coreSops
-    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[35,32,33,39,38,42,44].includes(s.id)).sort((a,b)=>[35,32,33,39,38,42,44].indexOf(a.id)-[35,32,33,39,38,42,44].indexOf(b.id)).filter(s=>{
+    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[35,32,33,39,38,42,44,45].includes(s.id)).sort((a,b)=>[35,32,33,39,38,42,44,45].indexOf(a.id)-[35,32,33,39,38,42,44,45].indexOf(b.id)).filter(s=>{
       if(!ql)return true;
       return (s.title+s.desc+(s.topics||[]).join(' ')+(s.audience||[]).join(' ')).toLowerCase().includes(ql);
     });
