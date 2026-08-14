@@ -1137,6 +1137,11 @@ function applyOverrides(){
     overrides={};
     localStorage.removeItem('wl_overrides');
   }
+  // Clockify (id:1) and Time Off Policy (id:4) were rewritten July 2026 — drop any
+  // stale local override so browsers pick up the new content automatically.
+  let changed=false;
+  [1,4].forEach(id=>{if(overrides[id]){delete overrides[id];changed=true;}});
+  if(changed)localStorage.setItem('wl_overrides',JSON.stringify(overrides));
   [...coreSops,...smClients,smWiki].forEach(s=>{
     if(s && overrides[s.id]) Object.assign(s, overrides[s.id]);
   });
