@@ -496,13 +496,6 @@ const coreSops=[
    desc:'Weekly SOP for monitoring and responding to Google Business Profile reviews for WebLight Media clients. Positive reviews are answered on behalf of the client; negative reviews are left for the client and escalated when needed.',
    sections:['Access the service Chrome profile','Access & open each client GBP','View new reviews since the previous Monday','Respond to positive reviews only','Proofing & completion in Asana','Quick reference summary'],
    topics:['Google Business Profile','Review replies','Weekly Monday task','Positive reviews','Negative review escalation','service@weblightmedia.com','GBP Manager','Asana']},
-  {id:33,title:'Website Hosting & Functionality Check',icon:'globe',status:'live',pages:1,updated:'March 2026',category:'Social Media',
-   driveUrl:'https://docs.google.com/document/d/11AJpqUe83yiPXnz2f0h_kns6g_IZNJcP/view',
-   previewUrl:'https://docs.google.com/document/d/11AJpqUe83yiPXnz2f0h_kns6g_IZNJcP/preview',
-   audience:['Social media team','Team managers'],
-   desc:'Weekly SOP for checking client websites for uptime and front-end functionality issues including broken layouts, missing images, broken buttons, and page errors before clients notice them.',
-   sections:['Set up for the check in Chrome Incognito','Front-end website check','Check homepage layout, images, formatting, and buttons','Spot-check one subpage','Report issues immediately with screenshots','Quick reference — what to check'],
-   topics:['Website hosting check','Website functionality check','Weekly Monday task','Google Chrome Incognito','Broken buttons','Missing images','404 errors','500 errors','Client websites','Screenshot reporting','bbynes@weblightmedia.com','david@weblightmedia.com']},
   {id:44,title:'BrightLocal Citation Builder',icon:'mappin',status:'live',pages:8,updated:'July 2026',category:'Social Media',
    driveUrl:'https://docs.google.com/document/d/1Xn3HxuHJwa3dFdjBoLDrAddTbqwR2Red23I4hF60xR8/view',
    previewUrl:'https://docs.google.com/document/d/1Xn3HxuHJwa3dFdjBoLDrAddTbqwR2Red23I4hF60xR8/preview',
@@ -783,9 +776,9 @@ function render(){
   const showAll=activeFilter==='All';
   const showSM=showAll||activeFilter==='Social Media';
 
-  // Core / category SOPs (ids 32,33,35,38,39,42 are Agency SOPs shown under Social Media only)
+  // Core / category SOPs (ids 32,35,38,39,42,44,45 are Agency SOPs shown under Social Media only)
   const coreFiltered=[...coreSops,...customSops.filter(s=>s.placement==='core')].filter(s=>{
-    if([32,33,35,38,39,42,44,45].includes(s.id))return false;
+    if([32,35,38,39,42,44,45].includes(s.id))return false;
     const catMatch=showAll||(s.category===activeFilter);
     if(!catMatch)return false;
     if(!ql)return true;
@@ -829,7 +822,7 @@ function render(){
     const nonGbpFiltered=smFiltered.filter(s=>!s.isGbpSop);
 
     // Agency-wide Social Media SOPs (Sprout Social + Review Replies + Website Check) from coreSops
-    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[35,32,33,39,38,42,44,45].includes(s.id)).sort((a,b)=>[35,32,33,39,38,42,44,45].indexOf(a.id)-[35,32,33,39,38,42,44,45].indexOf(b.id)).filter(s=>{
+    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[35,32,39,38,42,44,45].includes(s.id)).sort((a,b)=>[35,32,39,38,42,44,45].indexOf(a.id)-[35,32,39,38,42,44,45].indexOf(b.id)).filter(s=>{
       if(!ql)return true;
       return (s.title+s.desc+(s.topics||[]).join(' ')+(s.audience||[]).join(' ')).toLowerCase().includes(ql);
     });
