@@ -517,13 +517,6 @@ const coreSops=[
    desc:'Weekly Monday check of all client websites in an incognito window — confirm each site is live, check homepage and one subpage for broken layout, missing images, formatting, and broken buttons, and report issues to bbynes and david.',
    sections:['Set Up for the Check','Front-End Website Check','Reporting Issues','Quick Reference'],
    topics:['website','hosting','functionality check','weekly check','incognito','uptime','QA','maintenance','broken links']},
-  {id:5,title:'BlueCastle IT Solutions',icon:'star',status:'live',pages:2,updated:'September 2026',category:'Website Maintenance',
-   driveUrl:'https://docs.google.com/document/d/1ua4I2pP1vWKWFguJS-myreW3gcH8BJUIRbhDOBeQXnc/view',
-   previewUrl:'https://docs.google.com/document/d/1ua4I2pP1vWKWFguJS-myreW3gcH8BJUIRbhDOBeQXnc/preview',
-   audience:['All team members','Team managers'],
-   desc:'Client-specific weekly check for BlueCastle IT Solutions (bluecastleit.com) — verify the Trustindex.io Google review widget on the homepage matches the latest GBP reviews; if it is missing, outdated, or mismatched, email jacob@weblightmedia.com. Performed alongside the standard weekly website check.',
-   sections:['Background','How to Check the Widget','What to Do','Quick Reference'],
-   topics:['bluecastle','website','google reviews','trustindex','review widget','GBP','maintenance']}
 ];
 
 const smWiki={id:20,title:'Social Media Clients — Master Wiki',icon:'bookopen',status:'live',pages:15,updated:'April 2026',category:'Social Media',
@@ -675,6 +668,13 @@ const smClients=[
    desc:'Social media SOP for Veda Medspa, a physician-owned medspa in Glastonbury, CT — 3 original Canva graphic posts per week, Gemini copy generation, imagery sourcing, phone-number rule, and Sprout Social scheduling.',
    sections:['Canva Graphics','Quick Reference'],
    topics:['veda medspa','social media','canva','gemini','sprout social','medspa','graphics','skincare','wellness','aesthetics']},
+  {id:5,order:17,title:'BlueCastle IT Solutions',icon:'star',status:'live',pages:2,updated:'September 2026',category:'Website Maintenance',
+   driveUrl:'https://docs.google.com/document/d/1ua4I2pP1vWKWFguJS-myreW3gcH8BJUIRbhDOBeQXnc/view',
+   previewUrl:'https://docs.google.com/document/d/1ua4I2pP1vWKWFguJS-myreW3gcH8BJUIRbhDOBeQXnc/preview',
+   audience:['All team members','Team managers'],
+   desc:'Client-specific weekly check for BlueCastle IT Solutions (bluecastleit.com) — verify the Trustindex.io Google review widget on the homepage matches the latest GBP reviews; if it is missing, outdated, or mismatched, email jacob@weblightmedia.com. Performed alongside the standard weekly website check.',
+   sections:['Background','How to Check the Widget','What to Do','Quick Reference'],
+   topics:['bluecastle','website','google reviews','trustindex','review widget','GBP','maintenance']},
   {id:31,order:12,title:'Google Business Profile (GBP) Management',icon:'mappin',isGbpSop:true,status:'live',pages:4,updated:'July 2026',category:'Social Media',
    driveUrl:'https://docs.google.com/document/d/1_pkZ9g_-LAJBOboPHavvLXxyCWZy5EjlKxzea5oqc0I/view',
    previewUrl:'https://docs.google.com/document/d/1_pkZ9g_-LAJBOboPHavvLXxyCWZy5EjlKxzea5oqc0I/preview',
@@ -774,7 +774,9 @@ function render(){
     <span class="pill-icon">${svgIcon(CAT_ICONS[c]||'folder',13)}</span>${c}</div>`).join('')}</div>`;
 
   const showAll=activeFilter==='All';
-  const showSM=showAll||activeFilter==='Social Media';
+  const clientRecordsAll=[...smClients,...customSops.filter(s=>s.placement==='social-client')];
+  const clientCategoriesPresent=new Set(clientRecordsAll.map(s=>s.category));
+  const showSM=showAll||clientCategoriesPresent.has(activeFilter);
 
   // Core / category SOPs (ids 32,35,38,39,42,44,45 are Agency SOPs shown under Social Media only)
   const coreFiltered=[...coreSops,...customSops.filter(s=>s.placement==='core')].filter(s=>{
@@ -810,27 +812,32 @@ function render(){
     }
   });
 
-  // Social Media section
+  // Client section (Social Media, Website Maintenance, or any other category present in the client array)
   if(showSM){
-    const smClientsAll=[...smClients,...customSops.filter(s=>s.placement==='social-client')].sort((a,b)=>(a.order||99)-(b.order||99));
+    const smClientsAll=clientRecordsAll.filter(s=>showAll||s.category===activeFilter).sort((a,b)=>(a.order||99)-(b.order||99));
     const smFiltered=smClientsAll.filter(s=>{
       if(!ql)return true;
       return (s.title+s.desc+(s.topics||[]).join(' ')+(s.platforms||[]).join(' ')).toLowerCase().includes(ql);
     });
-    const wikiMatch=!ql||(smWiki.title+smWiki.desc+(smWiki.topics||[]).join(' ')).toLowerCase().includes(ql);
+    // Master Wiki, GBP featured card, and Agency SOPs are Social-Media-specific extras — only show
+    // them under 'All' or when the active filter is specifically 'Social Media'.
+    const showSmExtras=showAll||activeFilter==='Social Media';
+    const wikiMatch=showSmExtras&&(!ql||(smWiki.title+smWiki.desc+(smWiki.topics||[]).join(' ')).toLowerCase().includes(ql));
     const gbpSop=smClients.find(s=>s.isGbpSop);
+    const gbpMatch=showSmExtras&&gbpSop&&(!ql||(gbpSop.title+gbpSop.desc+(gbpSop.topics||[]).join(' ')).toLowerCase().includes(ql));
     const nonGbpFiltered=smFiltered.filter(s=>!s.isGbpSop);
 
     // Agency-wide Social Media SOPs (Sprout Social + Review Replies + Website Check) from coreSops
-    const agencySmSops=coreSops.filter(s=>s.category==='Social Media'&&[35,32,39,38,42,44,45].includes(s.id)).sort((a,b)=>[35,32,39,38,42,44,45].indexOf(a.id)-[35,32,39,38,42,44,45].indexOf(b.id)).filter(s=>{
+    const agencySmSops=showSmExtras?coreSops.filter(s=>s.category==='Social Media'&&[35,32,39,38,42,44,45].includes(s.id)).sort((a,b)=>[35,32,39,38,42,44,45].indexOf(a.id)-[35,32,39,38,42,44,45].indexOf(b.id)).filter(s=>{
       if(!ql)return true;
       return (s.title+s.desc+(s.topics||[]).join(' ')+(s.audience||[]).join(' ')).toLowerCase().includes(ql);
-    });
+    }):[];
 
-    const totalSmCount=smClientsAll.length+1+agencySmSops.length; // +1 for smWiki
+    const totalSmCount=smClientsAll.length+(showSmExtras?1:0)+agencySmSops.length; // +1 for smWiki when shown
+    const sectionTitle=showAll?'Social Media':activeFilter;
 
     if(wikiMatch||smFiltered.length>0||agencySmSops.length>0){
-      html+=`<div class="section-header"><div class="section-title"><span class="section-icon">${svgIcon('device',16)}</span> Social Media <span class="section-count">${totalSmCount}</span></div></div>`;
+      html+=`<div class="section-header"><div class="section-title"><span class="section-icon">${svgIcon(CAT_ICONS[sectionTitle]||'device',16)}</span> ${sectionTitle} <span class="section-count">${totalSmCount}</span></div></div>`;
       if(wikiMatch){
         html+=`<div class="sm-wiki-card" onclick="openModal(20)">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
@@ -841,7 +848,7 @@ function render(){
           <div style="font-size:13px;color:var(--nav-text)">${smWiki.desc}</div>
         </div>`;
       }
-      if(gbpSop&&(!ql||(gbpSop.title+gbpSop.desc+(gbpSop.topics||[]).join(' ')).toLowerCase().includes(ql))){
+      if(gbpMatch){
         html+=`<div class="gbp-card-featured" onclick="openModal(${gbpSop.id})">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
             <span class="icon-chip" style="width:34px;height:34px;border-radius:8px">${svgIcon(gbpSop.icon,20)}</span>
