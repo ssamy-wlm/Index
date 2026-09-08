@@ -864,8 +864,18 @@ function render(){
         html+=`<div class="cards-grid">${agencySmSops.map(s=>renderCard(s)).join('')}</div>`;
       }
       if(nonGbpFiltered.length>0){
-        html+=`<div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Individual Client SOPs</div>`;
-        html+=`<div class="client-tiles">${nonGbpFiltered.map(s=>renderClientTile(s)).join('')}</div>`;
+        if(showAll){
+          const groupOrder=['Social Media','Website Maintenance'];
+          const catsPresent=[...new Set(nonGbpFiltered.map(s=>s.category))];
+          const orderedCats=[...groupOrder.filter(c=>catsPresent.includes(c)),...catsPresent.filter(c=>!groupOrder.includes(c))];
+          orderedCats.forEach(cat=>{
+            const group=nonGbpFiltered.filter(s=>s.category===cat);
+            html+=`<div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;margin-top:4px">${cat}</div>`;
+            html+=`<div class="client-tiles">${group.map(s=>renderClientTile(s)).join('')}</div>`;
+          });
+        } else {
+          html+=`<div class="client-tiles">${nonGbpFiltered.map(s=>renderClientTile(s)).join('')}</div>`;
+        }
       }
     }
   }
