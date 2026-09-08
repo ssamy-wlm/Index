@@ -834,7 +834,7 @@ function render(){
     }):[];
 
     const totalSmCount=smClientsAll.length+(showSmExtras?1:0)+agencySmSops.length; // +1 for smWiki when shown
-    const sectionTitle=showAll?'Social Media':activeFilter;
+    const sectionTitle=showAll?'Clients':activeFilter;
 
     if(wikiMatch||smFiltered.length>0||agencySmSops.length>0){
       html+=`<div class="section-header"><div class="section-title"><span class="section-icon">${svgIcon(CAT_ICONS[sectionTitle]||'device',16)}</span> ${sectionTitle} <span class="section-count">${totalSmCount}</span></div></div>`;
