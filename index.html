@@ -685,8 +685,8 @@ function getCustomTabs(){try{return JSON.parse(localStorage.getItem('wl_custom_t
 function saveCustomTabs(arr){localStorage.setItem('wl_custom_tabs',JSON.stringify(arr));}
 
 // ─── CATEGORIES ───────────────────────────────────────────────
-const BASE_CATEGORIES=['All','Operations','People & HR','Projects','Social Media','Design & Brand','Client Management'];
-const CAT_ICONS={'All':'grid','Operations':'building','People & HR':'users','Projects':'clipboard','Social Media':'device','Design & Brand':'palette','Client Management':'message'};
+const BASE_CATEGORIES=['All','Operations','People & HR','Projects','Social Media','Website Maintenance','Design & Brand','Client Management'];
+const CAT_ICONS={'All':'grid','Operations':'building','People & HR':'users','Projects':'clipboard','Social Media':'device','Website Maintenance':'monitor','Design & Brand':'palette','Client Management':'message'};
 let activeFilter='All';
 
 function getAllCategories(){
