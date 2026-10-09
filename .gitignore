@@ -1,0 +1,12 @@
+
+# Lead / state registry data - keep out of GitHub
+new_ct_owner_leads.csv
+*_leads*.csv
+*leads*.csv
+CT_Retail_Leads*.csv
+existing_contacts*.csv
+principals*.csv
+master*.csv
+candidates*.csv
+osm*.csv
+rows*.csv
