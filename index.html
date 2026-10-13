@@ -1153,11 +1153,12 @@ function applyOverrides(){
     overrides={};
     localStorage.removeItem('wl_overrides');
   }
-  // Clockify (id:1) and the split US/Egypt Time Off Policy SOPs (id:47, id:48)
-  // were rewritten July 2026 — drop any stale local override so browsers pick
-  // up the new content automatically.
+  // Clockify (id:1), the split US/Egypt Time Off Policy SOPs (id:47, id:48), and
+  // id:3 (previously "Employee Onboarding", now reassigned to "Weekly Website
+  // Hosting & Functionality Check") were rewritten or reassigned — drop any
+  // stale local override so browsers pick up the current content automatically.
   let changed=false;
-  [1,47,48].forEach(id=>{if(overrides[id]){delete overrides[id];changed=true;}});
+  [1,3,47,48].forEach(id=>{if(overrides[id]){delete overrides[id];changed=true;}});
   if(changed)localStorage.setItem('wl_overrides',JSON.stringify(overrides));
   [...coreSops,...smClients,smWiki].forEach(s=>{
     if(s && overrides[s.id]) Object.assign(s, overrides[s.id]);
