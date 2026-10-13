@@ -426,7 +426,7 @@ const coreSops=[
    desc:'Definitive reference for WebLight Media — covers company history, services, ideal clients, team structure, tools, pricing, and growth priorities. Start here.',
    sections:['Who We Are','Services We Offer','Our Ideal Clients — Who We Sell To','Our Team & Key Contractors','Core Tools & Technology','How We Price & Package','Where We Are Going — Growth Priorities'],
    topics:['WebLight Media','David Joslin','Connecticut','Digital marketing','Website design','SEO','Google Ads','Social media','Video production','Ideal clients','Team structure','Canva','Sprout Social','Gemini Gems','HeyGen','Google Workspace','Recurring revenue','White-glove service']},
-  {id:38,title:'Client Reporting & Analytics',icon:'trending',status:'live',pages:6,updated:'April 2026',category:'Social Media',
+  {id:38,title:'Client Reporting & Analytics',icon:'trending',status:'live',pages:6,updated:'April 2026',category:'Client Management',
    driveUrl:'https://docs.google.com/document/d/15QfNNjpsPZZbrgBQI2QN4NCvwkFk3C7J/view',
    previewUrl:'https://docs.google.com/document/d/15QfNNjpsPZZbrgBQI2QN4NCvwkFk3C7J/preview',
    audience:['Account managers','Team managers','All team members'],
@@ -461,14 +461,14 @@ const coreSops=[
    desc:'Time off and leave policy for WebLight Media Egyptian team members — probation, vacation and sick/personal days, the consecutive-leave limit, and the 2026 Egypt holiday calendar.',
    sections:['Probationary Period','Paid Vacation Days','Sick / Personal Days','Additional Time Off','2026 Holiday Calendar — Egypt'],
    topics:['time off','vacation','sick days','personal days','holidays','probation','leave','consecutive leave']},
-  {id:46,title:'Client Offboarding — Postmortem SOP',icon:'clipboard',status:'live',pages:5,updated:'July 2026',category:'Operations',
+  {id:46,title:'Client Offboarding — Postmortem SOP',icon:'clipboard',status:'live',pages:5,updated:'July 2026',category:'Client Management',
    driveUrl:'https://docs.google.com/document/d/116YTnA1pW7PFxvk_okNR2lcZr6_7guRCRuPmFJEIlXU/view',
    previewUrl:'https://docs.google.com/document/d/116YTnA1pW7PFxvk_okNR2lcZr6_7guRCRuPmFJEIlXU/preview',
    audience:['Account managers','Team managers','Technical team'],
    desc:'Process for offboarding a client when services end — covers hosting & domain transfer, Google Business Profile ownership handoff, removing WLM from every platform, Analytics/Search Console access, internal cleanup, and why review requests must never be sent at offboarding.',
    sections:['01 — Hosting & Domain: transfer domain registration, WordPress admin access, document paid plugins','02 — Google Business Profile: confirm client is Owner (not Manager) before removing WLM','03 — All Platforms & Accounts: confirm client Admin/Owner access first, then remove WLM, remove 2FA tied to WLM contacts','04 — Google Analytics & Search Console: add client as Admin, remove WLM after confirmed','05 — Internal WLM Cleanup: newsletter removal, archive Drive files, update tracker, close tasks, cancel GoHighLevel billing','06 — Reviews: never request a review at offboarding — collect only while the client is active and happy','07 — Full Offboarding Checklist','08 — Quick Reference table'],
    topics:['Client offboarding','Postmortem','Domain transfer','WordPress admin access','Paid plugins','Google Business Profile ownership','GBP Owner vs Manager','Platform access transfer','2FA removal','Google Analytics','Google Search Console','Newsletter removal','Google Drive archive','Client tracker','GoHighLevel billing','Never request review at offboarding','Review timing','Team Manager sign-off']},
-  {id:39,title:'New Client Website Design Project',icon:'monitor',status:'live',pages:6,updated:'April 2026',category:'Social Media',
+  {id:39,title:'New Client Website Design Project',icon:'monitor',status:'live',pages:6,updated:'April 2026',category:'Projects',
    driveUrl:'https://docs.google.com/document/d/1g3MwmrK2jlPUhQtKZSxSKr9yFSMyCQNJ/view',
    previewUrl:'https://docs.google.com/document/d/1g3MwmrK2jlPUhQtKZSxSKr9yFSMyCQNJ/preview',
    audience:['Account managers','Content team','Design team'],
@@ -735,8 +735,8 @@ function getCustomTabs(){try{return JSON.parse(localStorage.getItem('wl_custom_t
 function saveCustomTabs(arr){localStorage.setItem('wl_custom_tabs',JSON.stringify(arr));}
 
 // ─── CATEGORIES ───────────────────────────────────────────────
-const BASE_CATEGORIES=['All','Operations','People & HR','Projects','Social Media','Website Maintenance','SEO & Content Creation','Design & Brand','Client Management'];
-const CAT_ICONS={'All':'grid','Operations':'building','People & HR':'users','Projects':'clipboard','Social Media':'device','Website Maintenance':'monitor','SEO & Content Creation':'search','Design & Brand':'palette','Client Management':'message'};
+const BASE_CATEGORIES=['All','Operations','People & HR','Projects','Social Media','Website Maintenance','SEO & Content Creation','Client Management'];
+const CAT_ICONS={'All':'grid','Operations':'building','People & HR':'users','Projects':'clipboard','Social Media':'device','Website Maintenance':'monitor','SEO & Content Creation':'search','Client Management':'message'};
 let activeFilter='All';
 
 function getAllCategories(){
@@ -821,9 +821,9 @@ function render(){
   const clientCategoriesPresent=new Set(clientRecordsAll.map(s=>s.category));
   const showSM=showAll||clientCategoriesPresent.has(activeFilter);
 
-  // Core / category SOPs (ids 32,35,38,39,42,44,45 are Agency SOPs shown under Social Media only)
+  // Core / category SOPs (ids 32,35,42,44,45 are Agency SOPs shown under Social Media only)
   const coreFiltered=[...coreSops,...customSops.filter(s=>s.placement==='core')].filter(s=>{
-    if([32,35,38,39,42,44,45].includes(s.id))return false;
+    if([32,35,42,44,45].includes(s.id))return false;
     const catMatch=showAll||(s.category===activeFilter);
     if(!catMatch)return false;
     if(!ql)return true;
@@ -871,7 +871,7 @@ function render(){
     const nonGbpFiltered=smFiltered.filter(s=>!s.isGbpSop);
 
     // Agency-wide Social Media SOPs (Sprout Social + Review Replies + Website Check) from coreSops
-    const agencySmSops=showSmExtras?coreSops.filter(s=>s.category==='Social Media'&&[35,32,39,38,42,44,45].includes(s.id)).sort((a,b)=>[35,32,39,38,42,44,45].indexOf(a.id)-[35,32,39,38,42,44,45].indexOf(b.id)).filter(s=>{
+    const agencySmSops=showSmExtras?coreSops.filter(s=>s.category==='Social Media'&&[35,32,42,44,45].includes(s.id)).sort((a,b)=>[35,32,42,44,45].indexOf(a.id)-[35,32,42,44,45].indexOf(b.id)).filter(s=>{
       if(!ql)return true;
       return (s.title+s.desc+(s.topics||[]).join(' ')+(s.audience||[]).join(' ')).toLowerCase().includes(ql);
     }):[];
