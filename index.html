@@ -517,6 +517,41 @@ const coreSops=[
    desc:'Weekly Monday check of all client websites in an incognito window — confirm each site is live, check homepage and one subpage for broken layout, missing images, formatting, and broken buttons, and report issues to bbynes and david.',
    sections:['Set Up for the Check','Front-End Website Check','Reporting Issues','Quick Reference'],
    topics:['website','hosting','functionality check','weekly check','incognito','uptime','QA','maintenance','broken links']},
+  {id:7,title:'FAQs & Website Pages',icon:'clipboard',status:'live',pages:2,updated:'October 2026',category:'SEO & Content Creation',
+   driveUrl:'https://docs.google.com/document/d/1rgOIQtX6wfCWtdThx_BbpW46KpFs_htjtkvQpnPF97o/view',
+   previewUrl:'https://docs.google.com/document/d/1rgOIQtX6wfCWtdThx_BbpW46KpFs_htjtkvQpnPF97o/preview',
+   audience:['SEO & content team','Team managers'],
+   desc:'Monthly FAQ posts, town pages, service pages, and new client page projects — structure, uniqueness rules, and the pre-publish checklist. Every site change needs David\'s approval.',
+   sections:['Monthly FAQ Post','Town Pages','Service Pages','New Client Page Projects','Page Checklist','Quick Reference'],
+   topics:['faqs','town pages','service pages','website pages','yoast','semrush','e-e-a-t','approval','seo content']},
+  {id:8,title:'SEO, Technical SEO & AI SEO',icon:'search',status:'live',pages:2,updated:'October 2026',category:'SEO & Content Creation',
+   driveUrl:'https://docs.google.com/document/d/1L7mEEXW0JODdsH90ppUts9cVDQ7Y6QIZcQNP-8I0kac/view',
+   previewUrl:'https://docs.google.com/document/d/1L7mEEXW0JODdsH90ppUts9cVDQ7Y6QIZcQNP-8I0kac/preview',
+   audience:['SEO & content team','Team managers'],
+   desc:'On-page SEO with Yoast, technical site audits in Semrush, and AI search optimization (GEO) including llms.txt files. Covers basics so anyone can follow it.',
+   sections:['SEO Basics','Yoast SEO: Page by Page','Technical SEO & Site Audits','AI SEO (GEO)','llms.txt Files','Quick Reference'],
+   topics:['seo','yoast','technical seo','site audit','semrush','ai seo','geo','llms.txt','google search console','on-page']},
+  {id:9,title:'Blog Writing',icon:'pencil',status:'live',pages:2,updated:'October 2026',category:'SEO & Content Creation',
+   driveUrl:'https://docs.google.com/document/d/1cxvPERmwbp1AP6pUa5A0SPZQzwKGY9cTGdJsCGH7Fjw/view',
+   previewUrl:'https://docs.google.com/document/d/1cxvPERmwbp1AP6pUa5A0SPZQzwKGY9cTGdJsCGH7Fjw/preview',
+   audience:['SEO & content team','Team managers'],
+   desc:'How to plan, write, publish, and follow up on client blog posts — intake, keyword research, the approval table, writing, WordPress publishing, and post-publish tracking. Nothing is written until the plan is approved.',
+   sections:['New Client Intake','Find the Gap','Research in Semrush','Approval Table','Write the Post','Publish in WordPress','After Publishing','Monthly Client Cycle','Why These Rules Exist','Quick Reference'],
+   topics:['blog writing','keyword research','semrush','yoast','wordpress','faq schema','cannibalization','approval','position tracking','content']},
+  {id:10,title:'Branded Backlinks & Brand Mentions',icon:'globe',status:'live',pages:2,updated:'October 2026',category:'SEO & Content Creation',
+   driveUrl:'https://docs.google.com/document/d/1e-aZDuoCnoDok-I24Objz6dvtAjpLcXBcncTpozYnKk/view',
+   previewUrl:'https://docs.google.com/document/d/1e-aZDuoCnoDok-I24Objz6dvtAjpLcXBcncTpozYnKk/preview',
+   audience:['SEO & content team','Team managers'],
+   desc:'Earning, tracking, and reporting brand mentions and branded backlinks via Vazoola and Connectively — why the shift from paid links, the rules, and client reporting. Read with the Backlinks SOP.',
+   sections:['Why the Shift','Key Terms','Branded Backlinks via Vazoola','Brand Mentions via Connectively','Tools Tested','Tracking with Google Alerts','Reporting to Clients','Do and Don\'t','Quick Reference'],
+   topics:['brand mentions','branded backlinks','vazoola','connectively','google alerts','e-e-a-t','ai visibility','editorial backlinks','reporting']},
+  {id:11,title:'Backlinks',icon:'send',status:'live',pages:2,updated:'October 2026',category:'SEO & Content Creation',
+   driveUrl:'https://docs.google.com/document/d/1KkEnZQOkofXlqGmcJEPPgLsEYk_em7xPU6R-fVFHedc/view',
+   previewUrl:'https://docs.google.com/document/d/1KkEnZQOkofXlqGmcJEPPgLsEYk_em7xPU6R-fVFHedc/preview',
+   audience:['SEO & content team','Team managers'],
+   desc:'Ordering, checking, tracking, and reporting client backlinks — the monthly Vazoola order, content types, link quality checks, quotas, and tracking sheets. Teaches the basics for new team members.',
+   sections:['Backlinks 101','Monthly Quota per Client','Vazoola Content Types','Monthly Order Process','Checking Placed Links','Tracking & Reporting','Do and Don\'t','Quick Reference'],
+   topics:['backlinks','vazoola','anchor text','do-follow','ahrefs','domain rating','semrush','quotas','agency analytics','link quality']}
 ];
 
 const smWiki={id:20,title:'Social Media Clients — Master Wiki',icon:'bookopen',status:'live',pages:15,updated:'April 2026',category:'Social Media',
@@ -700,8 +735,8 @@ function getCustomTabs(){try{return JSON.parse(localStorage.getItem('wl_custom_t
 function saveCustomTabs(arr){localStorage.setItem('wl_custom_tabs',JSON.stringify(arr));}
 
 // ─── CATEGORIES ───────────────────────────────────────────────
-const BASE_CATEGORIES=['All','Operations','People & HR','Projects','Social Media','Website Maintenance','Design & Brand','Client Management'];
-const CAT_ICONS={'All':'grid','Operations':'building','People & HR':'users','Projects':'clipboard','Social Media':'device','Website Maintenance':'monitor','Design & Brand':'palette','Client Management':'message'};
+const BASE_CATEGORIES=['All','Operations','People & HR','Projects','Social Media','Website Maintenance','SEO & Content Creation','Design & Brand','Client Management'];
+const CAT_ICONS={'All':'grid','Operations':'building','People & HR':'users','Projects':'clipboard','Social Media':'device','Website Maintenance':'monitor','SEO & Content Creation':'search','Design & Brand':'palette','Client Management':'message'};
 let activeFilter='All';
 
 function getAllCategories(){
